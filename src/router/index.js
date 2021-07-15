@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Menu from '../view/Menu'
+import MainPage from '../view/MainPage'
 
 Vue.use(Router)
 
 export default new Router({
+  base: '/',
   mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'Menu',
-      component: Menu
+      name: 'MainPage',
+      component: MainPage
     }
   ]
 })
