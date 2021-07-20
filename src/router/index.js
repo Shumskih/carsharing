@@ -5,7 +5,7 @@ import MainPage from '../view/MainPage'
 Vue.use(Router)
 
 export default new Router({
-  base: '/',
+  base: '/carsharing-pages/',
   mode: 'history',
   routes: [
     {

@@ -31,7 +31,11 @@ export default {
   margin-left: 64px
   margin-right: 64px
 
-  @media (max-width: $screen-xs)
+  @media (max-width: $screen-md)
+    margin-left: 32px
+    margin-right: 36px
+
+  @media (max-width: 480px)
     width: 100%
     margin-left: 0
     margin-right: 0
@@ -43,6 +47,15 @@ export default {
       font-size: 70px
       line-height: 70px
       color: $black
+
+      @media (max-width: 600px)
+        font-size: 60px
+        line-height: 60px
+
+      @media (max-width: 480px)
+        font-size: 42px
+        line-height: 42px
+        margin-top: -64px
 
       @media (max-width: $screen-xs)
         font-size: 32px
@@ -59,6 +72,10 @@ export default {
       color: $gray
       margin-top: 34px
       margin-bottom: 60px
+
+      @media (max-width: 600px)
+        font-size: 24px
+        line-height: 26px
 
       @media (max-width: $screen-xs)
         font-size: 18px

@@ -131,6 +131,10 @@ body
 a
   text-decoration: none
 
+ul
+  list-style-type: none
+  padding: 0
+
 #app
   display: flex
   font-family: 'Roboto', sans-serif
@@ -176,8 +180,10 @@ a
   @media (max-width: 1221px)
     width: 77%
 
-  @media (max-width: $screen-xs)
+  @media (max-width: $screen-md)
     width: 100%
+
+  @media (max-width: 480px)
     height: 100vh
 
 .header
@@ -188,10 +194,14 @@ a
   margin-left: 64px
   margin-right: 64px
 
+  @media (max-width: $screen-md)
+    margin-left: 31px
+    margin-right: 36px
+
   &__logo a
     font-size: 40px
 
-    @media (max-width: $screen-xs)
+    @media (max-width: 600px)
       font-size: 30px
 
   &__location
@@ -203,7 +213,7 @@ a
     color: $gray
     margin-left: 8px
 
-  @media (max-width: $screen-xs)
+  @media (max-width: 480px)
     width: 100%
     flex-direction: column
     align-items: flex-end
@@ -222,10 +232,14 @@ a
   margin-right: 64px
   margin-bottom: 32px
 
+  @media (max-width: $screen-md)
+    margin-left: 31px
+    margin-right: 36px
+
   &__copyright
     color: $gray
 
-    @media (max-width: $screen-xs)
+    @media (max-width: 480px)
       order: 1
       margin-top: 8px
       margin-right: 16px
@@ -233,7 +247,7 @@ a
   &__phone a
     color: $black
 
-    @media (max-width: $screen-xs)
+    @media (max-width: 480px)
       order: 0
       color: $main-accent
       margin-right: 16px
@@ -241,14 +255,14 @@ a
     &:hover, &:active
       color: $main-accent
 
-      @media (max-width: $screen-xs)
+      @media (max-width: 480px)
         &:hover
           color: $gray-light
 
         &:active
           color: #FFFFFF
 
-  @media (max-width: $screen-xs)
+  @media (max-width: 480px)
     flex-direction: column
     justify-content: space-around
     align-items: flex-end
