@@ -88,8 +88,8 @@ export default {
   height: 100vh
   background-color: #151B1F
 
-  @media (max-width: $screen-md)
-    width: 65px
+  @media (max-width: 1023px)
+    width: 86px
 
   @media (max-width: 480px)
     display: none
@@ -124,7 +124,7 @@ export default {
     &:hover
       cursor: pointer
 
-    @media (max-width: $screen-lg)
+    @media (min-width: $screen-xs)
       display: none
 
     @media (max-width: 480px)
@@ -140,16 +140,18 @@ export default {
   position: absolute
   top: 0
   left: 0
-  width: 53%
   height: 100vh
   background-color: black
   z-index: 3
 
-  @media (max-width: $screen-md)
-    width: 75%
-
-  @media (max-width: $screen-sm)
+  @media (min-width: 0)
     width: 100%
+
+  @media (min-width: $screen-md)
+    width: 60%
+
+  @media (min-width: $screen-lg)
+    width: 53%
 
   @media (max-width: 480px)
     justify-content: flex-start

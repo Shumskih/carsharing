@@ -115,9 +115,6 @@ export default {
         }
       }
     }
-  },
-  mounted () {
-    // this.$swiper.width('1000px')
   }
 }
 </script>
@@ -167,9 +164,12 @@ ul
 .page
   display: flex
   justify-content: center
-  width: 100%
+  width: 94%
   max-width: 1376px
   margin: 0 auto
+
+  @media (max-width: 1023px)
+    width: 100%
 
 .left
   display: flex
@@ -177,10 +177,10 @@ ul
   justify-content: space-between
   width: 50%
 
-  @media (max-width: 1221px)
-    width: 77%
+  @media (max-width: $screen-lg)
+    width: 57%
 
-  @media (max-width: $screen-md)
+  @media (max-width: 1023px)
     width: 100%
 
   @media (max-width: 480px)
@@ -190,9 +190,12 @@ ul
   display: flex
   justify-content: space-between
   align-items: center
-  margin-top: 32px
+  margin-top: 30px
   margin-left: 64px
   margin-right: 64px
+
+  @media (max-width: 600px)
+    margin-top: 34px
 
   @media (max-width: $screen-md)
     margin-left: 31px
@@ -217,7 +220,7 @@ ul
     width: 100%
     flex-direction: column
     align-items: flex-end
-    margin-top: 16px
+    margin-top: 15px
     margin-left: 0
     margin-right: 0
     padding-right: 16px
@@ -275,22 +278,21 @@ ul
 .slider
   width: 50%
 
-  @media (max-width: 1221px)
-    width: 33%
+  @media (max-width: $screen-lg)
+    width: 43%
 
-  @media (max-width: $screen-sm)
+  @media (max-width: 1023px)
     display: none
 
 .swiper
   height: 100%
-  width: 100%
 
   .swiper-slide
     position: relative
     display: flex
     justify-content: center
-    align-items: center
-    max-width: 100%
+    //align-items: center
+    width: 100%
     height: 100%
     background-size: cover
 
@@ -314,48 +316,52 @@ ul
       height: 100%
       background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)
 
-.swiper-pagination
-  margin-bottom: 32px
+  &-pagination
+    margin-bottom: 32px
 
-.swiper-pagination-bullet
-  background-color: white
-  opacity: 1
+  &-pagination-bullet
+    background-color: white
+    opacity: 1
 
-.swiper-pagination-bullet-active
-  background-color: $main-accent
+  &-pagination-bullet-active
+    background-color: $main-accent
 
-.swiper-button-prev, .swiper-button-next
-  top: 0
-  width: 64px
-  height: 103%
+  &-button-prev, &-button-next
+    top: 0
+    width: 64px
+    height: 103%
 
-.swiper-button-prev
-  left: 0
-  right: auto
+  &-button-prev
+    left: 0
+    right: auto
 
-.swiper-button-next
-  right: 0
+  &-button-next
+    right: 0
 
-.swiper-button-prev:hover, .swiper-button-next:hover
-  background-color: rgba(14, 194, 97, 0.2)
+  &-button-prev:hover, &-button-next:hover
+    background-color: rgba(14, 194, 97, 0.2)
 
 .slide-content
   display: flex
   flex-direction: column
   align-items: flex-start
-  width: 495px
-  height: 100%
-  margin-top: 420px
   color: white
+  margin-top: 210px
   margin-left: 96px
   margin-right: 96px
   z-index: 1
 
   &__title
     font-weight: 500
-    font-size: 40px
-    line-height: 47px
     margin-bottom: 8px
+
+    @media (min-width: $screen-lg)
+      font-size: 40px
+      line-height: 47px
+
+    @media (max-width: 1439px)
+      font-size: 32px
+      line-height: 37px
 
   &__description
     font-weight: 300
@@ -363,11 +369,22 @@ ul
     line-height: 100%
     margin-bottom: 32px
 
+    @media (max-width: $screen-lg)
+      font-size: 24px
+      line-height: 24px
+
+    @media (max-width: 1439px)
+      font-size: 22px
+      line-height: 22px
+
   & .btn-slider-1, & .btn-slider-2, & .btn-slider-3, & .btn-slider-4
     border-radius: 4px
 
     &:hover
-      opacity: 0.8
+      filter: brightness(90%)
+
+    &:active
+      filter: brightness(80%)
 
   & .btn-slider-1
     background: linear-gradient(90deg, #13493F 0%, #0C7B1B 100%)

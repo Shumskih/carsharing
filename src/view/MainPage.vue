@@ -31,7 +31,7 @@ export default {
   margin-left: 64px
   margin-right: 64px
 
-  @media (max-width: $screen-md)
+  @media (max-width: $screen-lg)
     margin-left: 32px
     margin-right: 36px
 
@@ -84,7 +84,7 @@ export default {
         margin-bottom: 0
 
 .btn-big
-  @media (max-width: $screen-lg)
+  @media (min-width: $screen-xs)
     display: none
 
   @media (max-width: $screen-xs)
