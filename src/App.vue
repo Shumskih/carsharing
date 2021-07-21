@@ -89,7 +89,6 @@
 <script>
 import Menu from './components/Menu'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import 'swiper/css/swiper.css'
 
 export default {
   name: 'App',
@@ -397,4 +396,6 @@ ul
 
   & .btn-slider-4
     background: linear-gradient(90deg, #281349 0%, #720C7B 100%)
+
+@import "../node_modules/swiper/css/swiper.css"
 </style>
