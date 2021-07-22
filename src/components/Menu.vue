@@ -1,50 +1,43 @@
 <template>
   <div>
     <aside class="menu">
-      <div class="hamburger" @click="menuOpen = true">
-        <Icon name="hamburger" width="32" height="32" viewBox="0 0 32 32"/>
+      <div class="hamburger" @click="toggleMenu">
+        <Icon name="hamburger" />
       </div>
       <div class="lang">
         <a href="#">Eng</a>
       </div>
     </aside>
-    <aside class="hamburger-mobile" @click="menuOpen = true">
+    <aside class="hamburger-mobile" @click="toggleMenu">
       <Icon name="hamburger-mobile" width="34" height="34" viewBox="0 0 34 34"/>
     </aside>
-    <div class="cover" v-if="menuOpen"></div>
-    <div class="menu-open" v-if="menuOpen">
-      <div class="menu-open__close-btn" @click="menuOpen = false">
-        <Icon name="close-menu" width="32" height="32" viewBox="0 0 32 32"/>
+    <template v-if="menuOpen">
+      <div class="cover"></div>
+      <div class="menu-open">
+        <div class="menu-open__close-btn" @click="toggleMenu">
+          <Icon name="close-menu" />
+        </div>
+        <ul class="menu-open__links-list">
+          <li class="menu-open__link-item" v-for="menuItem in menuItems" :key="menuItem">
+            <a href="#">{{ menuItem }}</a>
+          </li>
+        </ul>
+        <div class="social">
+          <a href="#">
+            <Icon class="social__icon" name="telegram" />
+          </a>
+          <a href="#">
+            <Icon class="social__icon" name="facebook" />
+          </a>
+          <a href="#">
+            <Icon class="social__icon" name="instagram" />
+          </a>
+        </div>
+        <div class="menu-open__lang">
+          <a href="#">Eng</a>
+        </div>
       </div>
-      <ul class="menu-open__links-list">
-        <li class="menu-open__link-item">
-          <a href="#">Парковка</a>
-        </li>
-        <li class="menu-open__link-item">
-          <a href="#">Страховка</a>
-        </li>
-        <li class="menu-open__link-item">
-          <a href="#">Бензин</a>
-        </li>
-        <li class="menu-open__link-item">
-          <a href="#">Обслуживание</a>
-        </li>
-      </ul>
-      <div class="social">
-        <a href="#">
-          <Icon class="social__icon" name="telegram" width="32" height="32" viewBox="0 0 32 32"/>
-        </a>
-        <a href="#">
-          <Icon class="social__icon" name="facebook" width="32" height="32" viewBox="0 0 32 32"/>
-        </a>
-        <a href="#">
-          <Icon class="social__icon" name="instagram" width="32" height="32" viewBox="0 0 32 32"/>
-        </a>
-      </div>
-      <div class="menu-open__lang">
-        <a href="#">Eng</a>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -58,7 +51,18 @@ export default {
   },
   data () {
     return {
-      menuOpen: false
+      menuOpen: false,
+      menuItems: [
+        'Парковка',
+        'Страховка',
+        'Бензин',
+        'Обслуживание'
+      ]
+    }
+  },
+  methods: {
+    toggleMenu () {
+      this.menuOpen = !this.menuOpen
     }
   }
 }
