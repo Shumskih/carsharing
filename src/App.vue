@@ -83,8 +83,8 @@
 </template>
 
 <script>
-import Icon from './components/Icon'
-import Menu from './components/Menu'
+import Icon from '@/components/Icon'
+import Menu from '@/components/Menu'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
 export default {
