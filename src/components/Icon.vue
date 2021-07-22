@@ -9,9 +9,18 @@ export default {
   name: 'Icon',
   props: {
     name: String,
-    width: String,
-    height: String,
-    viewBox: String
+    width: {
+      default: '32',
+      type: String
+    },
+    height: {
+      default: '32',
+      type: String
+    },
+    viewBox: {
+      default: '0 0 32 32',
+      type: String
+    }
   }
 }
 </script>
