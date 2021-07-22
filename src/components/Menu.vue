@@ -76,7 +76,7 @@ export default {
   align-items: center
   width: 64px
   height: $fullViewportHeight
-  background-color: #151B1F
+  background-color: $dark-blue
 
   @media (max-width: 1023px)
     width: 86px
