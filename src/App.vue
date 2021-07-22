@@ -173,13 +173,13 @@ ul
   display: flex
   flex-direction: column
   justify-content: space-between
-  width: 50%
+  width: 100%
 
-  @media (max-width: $screen-lg)
+  @media (min-width: $screen-md)
     width: 57%
 
-  @media (max-width: 1023px)
-    width: 100%
+  @media (min-width: $screen-lg)
+    width: 50%
 
   @media (max-width: 480px)
     height: $fullViewportHeight
@@ -274,13 +274,14 @@ ul
     padding-bottom: 16px
 
 .slider
-  width: 50%
+  display: none
 
-  @media (max-width: $screen-lg)
+  @media (min-width: $screen-md)
+    display: block
     width: 43%
 
-  @media (max-width: 1023px)
-    display: none
+  @media (min-width: $screen-lg)
+    width: 50%
 
 .swiper
   height: 100%
@@ -289,10 +290,15 @@ ul
     position: relative
     display: flex
     justify-content: center
-    //align-items: center
     width: 100%
     height: 100%
     background-size: cover
+
+    &.slide-1, &.slide-2, &.slide-3, &.slide-4
+      background-size: 100%
+
+      @media (min-width: $screen-md)
+        background-size: auto
 
     &.slide-1
       background-image: url('../src/assets/img/slides/slide-1.jpg')

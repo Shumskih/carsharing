@@ -121,7 +121,7 @@ export default {
       display: block
       position: absolute
       top: 21px
-      left: 14px
+      left: 16px
 
 .menu-open
   display: flex
