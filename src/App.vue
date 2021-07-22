@@ -71,14 +71,10 @@
           </swiper-slide>
           <div class="swiper-pagination swiper-pagination-white" slot="pagination"></div>
           <div class="swiper-button-prev swiper-button-white" slot="button-prev">
-            <svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 1L1 10L9 19" stroke="#EEEEEE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <Icon name="arrow-left" width="10" height="20" viewBox="0 0 10 20"/>
           </div>
           <div class="swiper-button-next swiper-button-white" slot="button-next">
-            <svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1L9 10L1 19" stroke="#EEEEEE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <Icon name="arrow-right" width="10" height="20" viewBox="0 0 10 20"/>
           </div>
         </swiper>
       </section>
@@ -87,12 +83,14 @@
 </template>
 
 <script>
+import Icon from './components/Icon'
 import Menu from './components/Menu'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
 export default {
   name: 'App',
   components: {
+    Icon,
     Menu,
     Swiper,
     SwiperSlide
@@ -103,6 +101,7 @@ export default {
         slidesPerView: 1,
         spaceBetween: 0,
         effect: 'fade',
+        speed: 700,
         loop: true,
         pagination: {
           el: '.swiper-pagination',
@@ -183,7 +182,7 @@ ul
     width: 100%
 
   @media (max-width: 480px)
-    height: 100vh
+    height: $fullViewportHeight
 
 .header
   display: flex
