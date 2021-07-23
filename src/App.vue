@@ -132,6 +132,7 @@ ul
 
 #app
   display: flex
+  justify-content: space-between
   font-family: 'Roboto', sans-serif
   font-weight: 700
   -webkit-font-smoothing: antialiased
@@ -163,11 +164,14 @@ ul
   display: flex
   justify-content: center
   width: 94%
-  max-width: 1376px
-  margin: 0 auto
 
   @media (max-width: 1023px)
     width: 100%
+
+  @media (min-width: $screen-lg)
+    justify-content: space-between
+    width: 96%
+    margin: 0
 
 .left
   display: flex
@@ -275,6 +279,7 @@ ul
 
 .slider
   display: none
+  max-width: 811px
 
   @media (min-width: $screen-md)
     display: block
@@ -282,6 +287,9 @@ ul
 
   @media (min-width: $screen-lg)
     width: 50%
+
+  @media (min-width: 1920px)
+    width: 37%
 
 .swiper
   height: 100%
@@ -292,13 +300,13 @@ ul
     justify-content: center
     width: 100%
     height: 100%
-    background-size: cover
 
     &.slide-1, &.slide-2, &.slide-3, &.slide-4
-      background-size: 100%
+      background-size: contain
 
       @media (min-width: $screen-md)
-        background-size: auto
+        background-size: cover
+        background-repeat: no-repeat
 
     &.slide-1
       background-image: url('../src/assets/img/slides/slide-1.jpg')

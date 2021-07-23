@@ -143,6 +143,18 @@ export default {
   @media (min-width: $screen-lg)
     width: 53%
 
+  @media (min-width: 1726px)
+    width: 55%
+
+  @media (min-width: 1802px)
+    width: 57%
+
+  @media (min-width: 1887px)
+    width: 60%
+
+  @media (min-width: 1920px)
+    width: 65%
+
   @media (max-width: 480px)
     justify-content: flex-start
 
