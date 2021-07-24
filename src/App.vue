@@ -71,10 +71,10 @@
           </swiper-slide>
           <div class="swiper-pagination swiper-pagination-white" slot="pagination"></div>
           <div class="swiper-button-prev swiper-button-white" slot="button-prev">
-            <Icon name="arrow-left" width="10" height="20" viewBox="0 0 10 20"/>
+            <icon name="arrow-left" width="10" height="20" viewBox="0 0 10 20"/>
           </div>
           <div class="swiper-button-next swiper-button-white" slot="button-next">
-            <Icon name="arrow-right" width="10" height="20" viewBox="0 0 10 20"/>
+            <icon name="arrow-right" width="10" height="20" viewBox="0 0 10 20"/>
           </div>
         </swiper>
       </section>

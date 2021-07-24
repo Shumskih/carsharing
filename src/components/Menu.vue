@@ -2,35 +2,35 @@
   <div>
     <aside class="menu">
       <div class="hamburger" @click="toggleMenu">
-        <Icon name="hamburger" />
+        <icon name="hamburger" />
       </div>
       <div class="lang">
         <a href="#">Eng</a>
       </div>
     </aside>
     <aside class="hamburger-mobile" @click="toggleMenu">
-      <Icon name="hamburger-mobile" width="34" height="34" viewBox="0 0 34 34"/>
+      <icon name="hamburger-mobile" width="34" height="34" viewBox="0 0 34 34"/>
     </aside>
     <template v-if="menuOpen">
       <div class="cover"></div>
       <div class="menu-open">
         <div class="menu-open__close-btn" @click="toggleMenu">
-          <Icon name="close-menu" />
+          <icon name="close-menu" />
         </div>
         <ul class="menu-open__links-list">
-          <li class="menu-open__link-item" v-for="menuItem in menuItems" :key="menuItem">
-            <a href="#">{{ menuItem }}</a>
+          <li class="menu-open__link-item" v-for="menuItem in menuItems" :key="menuItem.label">
+            <a :href="menuItem.path">{{ menuItem.label }}</a>
           </li>
         </ul>
         <div class="social">
           <a href="#">
-            <Icon class="social__icon" name="telegram" />
+            <icon class="social__icon" name="telegram" />
           </a>
           <a href="#">
-            <Icon class="social__icon" name="facebook" />
+            <icon class="social__icon" name="facebook" />
           </a>
           <a href="#">
-            <Icon class="social__icon" name="instagram" />
+            <icon class="social__icon" name="instagram" />
           </a>
         </div>
         <div class="menu-open__lang">
@@ -53,10 +53,22 @@ export default {
     return {
       menuOpen: false,
       menuItems: [
-        'Парковка',
-        'Страховка',
-        'Бензин',
-        'Обслуживание'
+        {
+          path: '/',
+          label: 'Парковка'
+        },
+        {
+          path: '/',
+          label: 'Страховка'
+        },
+        {
+          path: '/',
+          label: 'Бензин'
+        },
+        {
+          path: '/',
+          label: 'Обслуживание'
+        }
       ]
     }
   },
