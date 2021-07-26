@@ -169,6 +169,9 @@ ul
 .btn-crimson
   background: linear-gradient(90deg, #493013 0%, #7B0C3B 100%)
 
+.position-fixed
+  position: fixed
+
 .page
   display: flex
   justify-content: center

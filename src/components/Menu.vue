@@ -1,6 +1,6 @@
 <template>
   <div>
-    <aside class="menu">
+    <aside class="menu" :class="{ 'position-fixed': isNotMainPage() }">
       <div class="hamburger" @click="toggleMenu">
         <icon name="hamburger" />
       </div>
@@ -69,7 +69,10 @@ export default {
           path: '/',
           label: 'Обслуживание'
         }
-      ]
+      ],
+      isNotMainPage () {
+        return this.$route.path !== '/'
+      }
     }
   },
   methods: {

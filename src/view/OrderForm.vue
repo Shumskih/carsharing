@@ -320,9 +320,9 @@ label
 
 #app
   height: 100%
-
-.menu
-  position: fixed
+//
+//.menu
+//  position: fixed
 
 .page
   width: 100%

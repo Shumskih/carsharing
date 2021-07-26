@@ -4,11 +4,11 @@
     <div class="cover-center">
       <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
       <div class="cover-center__description">Поминутная аренда авто твоего города</div>
-      <a href="/order" class="btn btn-standard not-xs">Забронировать</a>
+      <router-link :to="{ name: 'OrderForm' }" class="btn btn-standard not-xs">Забронировать</router-link>
     </div>
   </section>
   <div class="btn-big">
-    <a href="#">Забронировать</a>
+    <router-link :to="{ name: 'OrderForm' }">Забронировать</router-link>
   </div>
 </main>
 </template>
