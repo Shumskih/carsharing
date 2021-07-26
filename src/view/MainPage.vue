@@ -4,7 +4,7 @@
     <div class="cover-center">
       <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
       <div class="cover-center__description">Поминутная аренда авто твоего города</div>
-      <a href="#" class="btn btn-standard not-xs">Забронировать</a>
+      <a href="/order" class="btn btn-standard not-xs">Забронировать</a>
     </div>
   </section>
   <div class="btn-big">
@@ -32,7 +32,7 @@ export default {
   margin-right: 64px
 
   @media (max-width: $screen-lg)
-    margin-left: 32px
+    margin-left: 64px
     margin-right: 36px
 
   @media (max-width: 480px)

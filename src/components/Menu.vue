@@ -136,10 +136,10 @@ export default {
       left: 16px
 
 .menu-open
+  position: fixed
   display: flex
   flex-direction: column
   justify-content: center
-  position: absolute
   top: 0
   left: 0
   height: $fullViewportHeight
@@ -240,7 +240,7 @@ export default {
           color: $main-accent
 
 .cover
-  position: absolute
+  position: fixed
   top: 0
   left: 0
   width: 100%
