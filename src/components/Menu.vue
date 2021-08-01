@@ -1,6 +1,6 @@
 <template>
   <div>
-    <aside class="menu" :class="{ 'position-fixed': isNotMainPage() }">
+    <aside class="menu">
       <div class="hamburger" @click="toggleMenu">
         <icon name="hamburger" />
       </div>
@@ -49,6 +49,12 @@ export default {
   components: {
     Icon
   },
+  props: {
+    fixed: {
+      default: false,
+      type: Boolean
+    }
+  },
   data () {
     return {
       menuOpen: false,
@@ -85,6 +91,7 @@ export default {
 
 <style lang="sass" scoped>
 .menu
+  position: fixed
   display: flex
   flex-direction: column
   justify-content: space-between

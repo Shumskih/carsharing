@@ -1,155 +1,165 @@
 <template>
-  <div class="wrapper">
-    <div class="tabs-wrapper">
-      <div class="horizontal-line"></div>
-      <ul class="tabs">
-        <li class="tabs__item" v-for="(orderStep, index) in orderSteps" :key="index">
-          <a :href="orderStep.href" @click.prevent="setActive(trimSharpFromHref(orderStep.href))" :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }">{{ orderStep.name }}</a>
-          <icon v-if="!isLastOrderStep(index)" class="tabs__item-arrow" name="order-tab-arrow" width="6" height="8" viewBox="0 0 6 8" />
-        </li>
-      </ul>
-      <div class="horizontal-line"></div>
-    </div>
-    <section class="tabs__content-wrapper">
-      <div class="tabs__items-content">
-        <div class="tabs__item-content" :class="{ 'active': isActive('location') }" id="location">
-          <div class="location__data">
-            <div class="input-row">
-              <label for="city">Город</label>
-              <input type="search" id="city" placeholder="Начните вводить город">
-            </div>
-            <div class="input-row">
-              <label for="pick-up-point">Пункт выдачи</label>
-              <input type="search" id="pick-up-point" placeholder="Начните вводить пункт выдачи">
-            </div>
-          </div>
-          <div class="location__map">
-            <p>Выбрать на карте:</p>
-            <img src="@/assets/img/map.jpg" alt="">
-          </div>
-        </div>
-        <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model">
-          <div class="filter__model">
-            <ul>
-              <li v-for="(filter, index) in modelTypes" :key="index">
-                <input name="model-filter" type="radio" :id="filter.type" :checked="index === 0">
-                <label :for="filter.type">{{ filter.label }}</label>
-              </li>
-            </ul>
-          </div>
-          <div class="cars-list">
-            <div :class="['cars-list__car', {' active' : index === 1}]" v-for="(car, index) in carsList" :key="index">
-              <div class="car-data">
-                <div class="car-name">{{ car.name }}</div>
-                <span class="car-price">{{ car.priceMin }} - {{ car.priceMax }} ₽</span>
+  <section class="order-page">
+    <app-header/>
+    <div class="wrapper">
+      <div class="tabs-wrapper">
+        <div class="horizontal-line"></div>
+        <ul class="tabs">
+          <li class="tabs__item" v-for="(orderStep, index) in orderSteps" :key="index">
+            <a :href="orderStep.href" @click.prevent="setActive(trimSharpFromHref(orderStep.href))" :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }">{{ orderStep.name }}</a>
+            <icon v-if="!isLastOrderStep(index)" class="tabs__item-arrow" name="order-tab-arrow" width="6" height="8" viewBox="0 0 6 8" />
+          </li>
+        </ul>
+        <div class="horizontal-line"></div>
+      </div>
+      <section class="tabs__content-wrapper">
+        <div class="tabs__items-content">
+          <div class="tabs__item-content" :class="{ 'active': isActive('location') }" id="location">
+            <div class="location__data">
+              <div class="input-row">
+                <label for="city">Город</label>
+                <input type="search" id="city" placeholder="Начните вводить город">
               </div>
-              <img :src="require(`@/assets/img/${car.image}`)" alt="" class="car-img">
+              <div class="input-row">
+                <label for="pick-up-point">Пункт выдачи</label>
+                <input type="search" id="pick-up-point" placeholder="Начните вводить пункт выдачи">
+              </div>
+            </div>
+            <div class="location__map">
+              <p>Выбрать на карте:</p>
+              <img src="@/assets/img/map.jpg" alt="">
+            </div>
+          </div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model">
+            <div class="filter__model">
+              <ul>
+                <li v-for="(filter, index) in modelTypes" :key="index">
+                  <input name="model-filter" type="radio" :id="filter.type" :checked="index === 0">
+                  <label :for="filter.type">{{ filter.label }}</label>
+                </li>
+              </ul>
+            </div>
+            <div class="cars-list">
+              <div :class="['cars-list__car', {' active' : index === 1}]" v-for="(car, index) in carsList" :key="index">
+                <div class="car-data">
+                  <div class="car-name">{{ car.name }}</div>
+                  <span class="car-price">{{ car.priceMin }} - {{ car.priceMax }} ₽</span>
+                </div>
+                <img :src="require(`@/assets/img/${car.image}`)" alt="" class="car-img">
+              </div>
+            </div>
+          </div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional">
+            <div class="filter filter__color">
+              <div class="filter__title">Цвет</div>
+              <ul>
+                <li>
+                  <input name="color-filter" type="radio" id="all-colors" checked>
+                  <label for="all-colors">Любой</label>
+                </li>
+                <li v-for="(filter, index) in colors" :key="index">
+                  <input name="color-filter" type="radio" :id="filter.type">
+                  <label :for="filter.type">{{ filter.label }}</label>
+                </li>
+              </ul>
+            </div>
+            <div class="filter filter__date">
+              <div class="filter__title">Дата аренды</div>
+              <div class="filter__data">
+                <div class="input-row">
+                  <label>С</label>
+                  <date-picker v-model="datePickerFrom" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
+                </div>
+                <div class="input-row">
+                  <label>По</label>
+                  <date-picker v-model="datePickerTo" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
+                </div>
+              </div>
+            </div>
+            <div class="filter filter__tariff">
+              <div class="filter__title">Тариф</div>
+              <ul>
+                <li v-for="(tariff, index) in tariffs" :key="index">
+                  <input name="tariff-filter" type="radio" :id="tariff.type" :checked="tariff.checked">
+                  <label :for="tariff.type">{{ tariff.name }}, {{ tariff.price }}</label>
+                </li>
+              </ul>
+            </div>
+            <div class="filter filter__additional">
+              <div class="filter__title">Доп услуги</div>
+              <ul>
+                <li v-for="(service, index) in additionalServices" :key="index">
+                  <input name="tariff-filter" type="checkbox" :id="service.id">
+                  <label :for="service.id">{{ service.name }}, {{ service.price }}</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total">
+            <div class="total">
+              <div class="total__car-info">
+                <div class="total__car-manufacturer">Hyndai, i30 N</div>
+                <div class="total__car-number">K 761 HA 73</div>
+                <div class="total__car-fuel"><span>Топливо</span> 100%</div>
+                <div class="total__car-date"><span>Доступна с</span> 12.06.2019 12:00</div>
+              </div>
+              <div class="total__car-img">
+                <img src="@/assets/img/cars/i-30-n.jpg">
+              </div>
             </div>
           </div>
         </div>
-        <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional">
-          <div class="filter filter__color">
-            <div class="filter__title">Цвет</div>
+        <div class="order-wrapper">
+          <div class="vertical-line"></div>
+          <div class="order">
+            <h3 class="order__title">Ваш заказ:</h3>
             <ul>
               <li>
-                <input name="color-filter" type="radio" id="all-colors" checked>
-                <label for="all-colors">Любой</label>
-              </li>
-              <li v-for="(filter, index) in colors" :key="index">
-                <input name="color-filter" type="radio" :id="filter.type">
-                <label :for="filter.type">{{ filter.label }}</label>
+                <p class="order__description">Пункт выдачи</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">Ульяновск, Нариманова 42</p>
               </li>
             </ul>
-          </div>
-          <div class="filter filter__date">
-            <div class="filter__title">Дата аренды</div>
-            <div class="filter__data">
-              <div class="input-row">
-                <label for="date-from">С</label>
-                <input type="search" id="date-from" placeholder="Введите дату и время">
-              </div>
-              <div class="input-row">
-                <label for="date-to">По</label>
-                <input type="search" id="date-to" placeholder="Введите дату и время">
-              </div>
-            </div>
-          </div>
-          <div class="filter filter__tariff">
-            <div class="filter__title">Тариф</div>
-            <ul>
-              <li v-for="(tariff, index) in tariffs" :key="index">
-                <input name="tariff-filter" type="radio" :id="tariff.type" :checked="tariff.checked">
-                <label :for="tariff.type">{{ tariff.name }}, {{ tariff.price }}</label>
-              </li>
-            </ul>
-          </div>
-          <div class="filter filter__additional">
-            <div class="filter__title">Доп услуги</div>
-            <ul>
-              <li v-for="(service, index) in additionalServices" :key="index">
-                <input name="tariff-filter" type="checkbox" :id="service.id">
-                <label :for="service.id">{{ service.name }}, {{ service.price }}</label>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total">
-          <div class="total">
-            <div class="total__car-info">
-              <div class="total__car-manufacturer">Hyndai, i30 N</div>
-              <div class="total__car-number">K 761 HA 73</div>
-              <div class="total__car-fuel"><span>Топливо</span> 100%</div>
-              <div class="total__car-date"><span>Доступна с</span> 12.06.2019 12:00</div>
-            </div>
-            <div class="total__car-img">
-              <img src="@/assets/img/cars/i-30-n.jpg">
+            <div class="order__price"><span>Цена:</span> от 8 000 до 12 000 ₽</div>
+            <div class="order__button">
+              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('location')">Выбрать модель</a>
+              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('model')">Дополнительно</a>
+              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('additional')">Итого</a>
+              <a href="" class="btn btn-standard" v-on:click.prevent v-if="isActive('total')" @click="confirmNewOrder()">Заказать</a>
             </div>
           </div>
         </div>
-      </div>
-      <div class="order-wrapper">
-        <div class="vertical-line"></div>
-        <div class="order">
-          <h3 class="order__title">Ваш заказ:</h3>
-          <ul>
-            <li>
-              <p class="order__description">Пункт выдачи</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">Ульяновск, Нариманова 42</p>
-            </li>
-          </ul>
-          <div class="order__price"><span>Цена:</span> от 8 000 до 12 000 ₽</div>
-          <div class="order__button">
-            <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('location')">Выбрать модель</a>
-            <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('model')">Дополнительно</a>
-            <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('additional')">Итого</a>
-            <a href="" class="btn btn-standard" v-on:click.prevent v-if="isActive('total')" @click="confirmNewOrder()">Заказать</a>
+      </section>
+      <div class="confirm-order__wrapper" v-if="confirmOrder">
+        <div class="confirm-order">
+          <div>Подтвердить заказ</div>
+          <div class="btn-group">
+            <router-link :to="{ name: 'OrderConfirmed' }" class="btn btn-standard">Забронировать</router-link>
+            <a href="#" v-on:click.prevent class="btn btn-crimson" @click="confirmNewOrder()">Вернуться</a>
           </div>
-        </div>
-      </div>
-    </section>
-    <div class="confirm-order__wrapper" v-if="confirmOrder">
-      <div class="confirm-order">
-        <div>Подтвердить заказ</div>
-        <div class="btn-group">
-          <a href="/order-confirmed" class="btn btn-standard">Подтвердить</a>
-          <a href="#" v-on:click.prevent class="btn btn-crimson" @click="confirmNewOrder()">Вернуться</a>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
+import AppHeader from '../components/AppHeader'
 import Icon from '@/components/Icon'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
 
 export default {
   name: 'Order',
   components: {
-    Icon
+    AppHeader,
+    Icon,
+    DatePicker
   },
   data () {
     return {
+      datePickerFrom: null,
+      datePickerTo: null,
       confirmOrder: false,
       activeItem: 'location',
       orderSteps: [
@@ -289,10 +299,7 @@ export default {
 </script>
 
 <style lang="sass">
-html, body
-  height: 100%
-
-input
+input, .mx-input
   width: 224px
   padding: 3px 8px
   border: none
@@ -318,19 +325,29 @@ label
 .btn-disabled
   background-color: $gray-light
 
-#app
+.mx-input
+  box-shadow: none
+  height: inherit
+  width: 267px
+  margin-bottom: 13px
+  border-radius: 0
+
+  &:hover, &:focus
+    border-bottom: 1px solid #999999
+
+.mx-icon-clear
+  font-size: 14px
+  right: -55px
+  color: $black
+  top: 15px
+
+.mx-icon-calendar
+  display: none
+
+.order-page
+  display: flex
+  flex-direction: column
   height: 100%
-//
-//.menu
-//  position: fixed
-
-.page
-  width: 100%
-  justify-content: center
-
-.left
-  justify-content: space-between
-  width: 100%
 
 .top
   display: flex
@@ -690,5 +707,4 @@ label
     height: 100%
     overflow: auto
     background: rgba(255, 255, 255, 0.9)
-
 </style>

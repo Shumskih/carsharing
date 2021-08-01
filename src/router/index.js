@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import MainPage from '@/view/MainPage'
 import OrderForm from '@/view/OrderForm'
+import OrderConfirmed from '@/view/OrderConfirmed'
 
 Vue.use(Router)
 let base = '/'
@@ -11,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export default new Router({
-  base: base,
+  base,
   mode: 'history',
   routes: [
     {
@@ -22,7 +23,18 @@ export default new Router({
     {
       path: '/order',
       name: 'OrderForm',
-      component: OrderForm
+      component: OrderForm,
+      props: {
+        fixed: true
+      }
+    },
+    {
+      path: '/order-confirmed',
+      name: 'OrderConfirmed',
+      component: OrderConfirmed,
+      props: {
+        fixed: true
+      }
     }
   ]
 })

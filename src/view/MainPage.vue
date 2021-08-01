@@ -1,38 +1,56 @@
 <template>
-<main class="main">
-  <section class="cover">
-    <div class="cover-center">
-      <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
-      <div class="cover-center__description">Поминутная аренда авто твоего города</div>
-      <router-link :to="{ name: 'OrderForm' }" class="btn btn-standard not-xs">Забронировать</router-link>
-    </div>
+  <section class="main-page">
+    <section class="left">
+      <app-header/>
+      <section class="cover">
+        <div class="cover-center">
+          <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
+          <div class="cover-center__description">Поминутная аренда авто твоего города</div>
+          <router-link :to="{ name: 'OrderForm' }" class="btn btn-standard not-xs">Забронировать</router-link>
+        </div>
+        <div class="btn-big">
+          <router-link :to="{ name: 'OrderForm' }">Забронировать</router-link>
+        </div>
+      </section>
+      <app-footer />
+    </section>
+    <slider />
   </section>
-  <div class="btn-big">
-    <router-link :to="{ name: 'OrderForm' }">Забронировать</router-link>
-  </div>
-</main>
 </template>
 
 <script>
+import AppHeader from '../components/AppHeader'
+import AppFooter from '../components/AppFooter'
+import Slider from '../components/Slider'
+
 export default {
-  name: 'MainPage'
+  name: 'MainPage',
+  components: {
+    AppHeader,
+    AppFooter,
+    Slider
+  }
 }
 </script>
 
 <style lang="sass" scoped>
-.main
+.main-page
+  display: flex
   height: 100%
-  margin-top: 112px
+
+.left
+  display: flex
+  flex-direction: column
 
 .cover
   display: flex
   flex-direction: column
   justify-content: space-between
-  margin-left: 64px
+  width: 100%
+  margin-left: 128px
   margin-right: 64px
 
   @media (max-width: $screen-lg)
-    margin-left: 64px
     margin-right: 36px
 
   @media (max-width: 480px)
