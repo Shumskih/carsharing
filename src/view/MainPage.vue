@@ -1,17 +1,19 @@
 <template>
   <section class="main-page">
     <section class="left">
-      <app-header/>
-      <section class="cover">
-        <div class="cover-center">
-          <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
-          <div class="cover-center__description">Поминутная аренда авто твоего города</div>
-          <router-link :to="{ name: 'OrderForm' }" class="btn btn-standard not-xs">Забронировать</router-link>
-        </div>
-        <div class="btn-big">
-          <router-link :to="{ name: 'OrderForm' }">Забронировать</router-link>
-        </div>
-      </section>
+      <div class="left__top">
+        <app-header/>
+        <section class="cover">
+          <div class="cover-center">
+            <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
+            <div class="cover-center__description">Поминутная аренда авто твоего города</div>
+            <router-link :to="{ name: 'OrderForm' }" class="btn btn-standard not-xs">Забронировать</router-link>
+          </div>
+          <div class="btn-big">
+            <router-link :to="{ name: 'OrderForm' }">Забронировать</router-link>
+          </div>
+        </section>
+      </div>
       <app-footer />
     </section>
     <slider />
@@ -41,6 +43,12 @@ export default {
 .left
   display: flex
   flex-direction: column
+  height: 100%
+
+  &__top
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
 
 .cover
   display: flex
@@ -49,6 +57,7 @@ export default {
   width: 100%
   margin-left: 128px
   margin-right: 64px
+  margin-top: 123px
 
   @media (max-width: $screen-lg)
     margin-right: 36px

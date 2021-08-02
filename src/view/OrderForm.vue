@@ -361,7 +361,7 @@ label
   width: 100%
   max-width: 1376px
   padding-right: 64px
-  padding-left: 128px
+  padding-left: 64px
   margin-bottom: 23.5px
 
   &__logo a
@@ -373,7 +373,7 @@ label
   max-width: 1376px
   align-self: center
   margin: 8px auto 7px auto
-  padding-left: 128px
+  padding-left: 96px
 
   &__item
     display: flex
@@ -411,7 +411,7 @@ label
     height: calc(100% - 35px)
     max-width: 1376px
     margin: 0 auto
-    padding-left: 128px
+    padding-left: 96px
     padding-right: 64px
 
   &__items-content
