@@ -1,118 +1,97 @@
 <template>
-  <div class="wrapper">
-    <div class="tabs-wrapper">
-      <div class="horizontal-line"></div>
-      <div class="order-number">
-        Заказ номер RU58491823
+  <section class="order-confirmed">
+    <app-header inner/>
+    <div class="wrapper">
+      <div class="tabs-wrapper">
+        <div class="horizontal-line"></div>
+        <div class="order-number-wrapper">
+          <div class="order-number">Заказ номер RU58491823</div>
+        </div>
+        <div class="horizontal-line"></div>
       </div>
-      <div class="horizontal-line"></div>
+      <section class="tabs__content-wrapper">
+        <div class="tabs__items-content">
+          <div class="tabs__item-content">
+            <div class="total">
+              <div class="total__car-info">
+                <div class="total__title">Ваш заказ подтверждён</div>
+                <div class="total__car-manufacturer">Hyndai, i30 N</div>
+                <div class="total__car-number">K 761 HA 73</div>
+                <div class="total__car-fuel"><span>Топливо</span> 100%</div>
+                <div class="total__car-date"><span>Доступна с</span> 12.06.2019 12:00</div>
+              </div>
+              <div class="total__car-img">
+                <img src="@/assets/img/cars/i-30-n.jpg">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="order-wrapper">
+          <div class="vertical-line"></div>
+          <div class="order">
+            <h3 class="order__title">Ваш заказ:</h3>
+            <ul>
+              <li>
+                <p class="order__description">Пункт выдачи</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">Ульяновск, Нариманова 42</p>
+              </li>
+              <li>
+                <p class="order__description">Модель</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">Hyndai, i30 N</p>
+              </li>
+              <li>
+                <p class="order__description">Цвет</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">Голубой</p>
+              </li>
+              <li>
+                <p class="order__description">Длительность аренды</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">1д 2ч</p>
+              </li>
+              <li>
+                <p class="order__description">Тариф</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">На сутки</p>
+              </li>
+              <li>
+                <p class="order__description">Полный бак</p>
+                <div class="border--dotted"></div>
+                <p class="order__value">Да</p>
+              </li>
+            </ul>
+            <div class="order__price"><span>Цена:</span> 16 000 ₽</div>
+            <div class="order__button">
+              <a href="" class="btn btn-crimson" v-on:click.prevent>Отменить</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    <section class="tabs__content-wrapper">
-      <div class="tabs__items-content">
-        <div class="tabs__item-content">
-          <div class="total">
-            <div class="total__car-info">
-              <div class="total__title">Ваш заказ подтверждён</div>
-              <div class="total__car-manufacturer">Hyndai, i30 N</div>
-              <div class="total__car-number">K 761 HA 73</div>
-              <div class="total__car-fuel"><span>Топливо</span> 100%</div>
-              <div class="total__car-date"><span>Доступна с</span> 12.06.2019 12:00</div>
-            </div>
-            <div class="total__car-img">
-              <img src="@/assets/img/cars/i-30-n.jpg">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="order-wrapper">
-        <div class="vertical-line"></div>
-        <div class="order">
-          <h3 class="order__title">Ваш заказ:</h3>
-          <ul>
-            <li>
-              <p class="order__description">Пункт выдачи</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">Ульяновск, Нариманова 42</p>
-            </li>
-            <li>
-              <p class="order__description">Модель</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">Hyndai, i30 N</p>
-            </li>
-            <li>
-              <p class="order__description">Цвет</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">Голубой</p>
-            </li>
-            <li>
-              <p class="order__description">Длительность аренды</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">1д 2ч</p>
-            </li>
-            <li>
-              <p class="order__description">Тариф</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">На сутки</p>
-            </li>
-            <li>
-              <p class="order__description">Полный бак</p>
-              <div class="border--dotted"></div>
-              <p class="order__value">Да</p>
-            </li>
-          </ul>
-          <div class="order__price"><span>Цена:</span> 16 000 ₽</div>
-          <div class="order__button">
-            <a href="" class="btn btn-crimson" v-on:click.prevent>Отменить</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+  </section>
 </template>
 
 <script>
+import AppHeader from '../components/AppHeader'
+
 export default {
   name: 'OrderConfirmed',
-  mounted () {
-    this.$emit('showFooter', false)
-    this.$emit('showSlider', false)
+  components: {
+    AppHeader
   }
 }
 </script>
 
-<style lang="sass">
-html, body
-  height: 100%
-
-#app
-  height: 100%
-
-.page
-  width: 100%
-  justify-content: center
-
-.left
-  justify-content: space-between
-  width: 100%
-
-.top
+<style lang="sass" scoped>
+.order-confirmed
   display: flex
   flex-direction: column
+  height: 100%
 
 .wrapper
   height: 100%
-
-.header
-  align-self: center
-  width: 100%
-  max-width: 1376px
-  padding-right: 64px
-  padding-left: 128px
-  margin-bottom: 23.5px
-
-  &__logo a
-    font-size: 30px
-    line-height: 35px
 
 .tabs
   display: flex
@@ -120,6 +99,11 @@ html, body
   align-self: center
   margin: 8px auto 7px auto
   padding-left: 128px
+
+  &-wrapper
+    display: flex
+    flex-direction: column
+    margin: 8px auto 7px auto
 
   &__item
     display: flex
@@ -153,11 +137,11 @@ html, body
     font-size: 14px
     line-height: 16px
     color: $black
-    height: calc(100% - 35px)
+    height: calc(100% - 60px)
     max-width: 1376px
     margin: 0 auto
-    padding-left: 128px
-    padding-right: 64px
+    padding-left: 96px
+    padding-right: 32px
 
   &__items-content
     width: 72%
@@ -299,10 +283,10 @@ html, body
     background: rgba(255, 255, 255, 0.9)
 
 .order-number
-  display: flex
-  align-items: center
-  margin-left: 128px
-  height: 32px
-  color: $black
-  line-height: 16px
+  margin-left: 96px
+
+  &-wrapper
+    width: 100%
+    max-width: 1376px
+    margin: 0 auto
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header-inner': inner }">
     <div class="header__logo">
       <a href="/" class="main-accent">Need for drive</a>
     </div>
@@ -17,13 +17,19 @@ import Icon from './Icon'
 
 export default {
   name: 'AppHeader',
+  props: {
+    inner: {
+      default: false,
+      type: Boolean
+    }
+  },
   components: {
     Icon
   }
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .header
   display: flex
   justify-content: space-between
@@ -62,4 +68,16 @@ export default {
     margin-left: 0
     margin-right: 0
     padding-right: 16px
+
+  &-inner
+    align-self: center
+    width: 100%
+    max-width: 1376px
+    padding-right: 64px
+    padding-left: 64px
+    margin-bottom: 23.5px
+
+    & a
+      font-size: 30px
+      line-height: 35px
 </style>

@@ -23,18 +23,12 @@ export default new Router({
     {
       path: '/order',
       name: 'OrderForm',
-      component: OrderForm,
-      props: {
-        fixed: true
-      }
+      component: OrderForm
     },
     {
       path: '/order-confirmed',
       name: 'OrderConfirmed',
-      component: OrderConfirmed,
-      props: {
-        fixed: true
-      }
+      component: OrderConfirmed
     }
   ]
 })

@@ -1,6 +1,6 @@
 <template>
   <section class="order-page">
-    <app-header/>
+    <app-header inner/>
     <div class="wrapper">
       <div class="tabs-wrapper">
         <div class="horizontal-line"></div>
@@ -298,7 +298,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 input, .mx-input
   width: 224px
   padding: 3px 8px
@@ -355,18 +355,6 @@ label
 
 .wrapper
   height: 100%
-
-.header
-  align-self: center
-  width: 100%
-  max-width: 1376px
-  padding-right: 64px
-  padding-left: 64px
-  margin-bottom: 23.5px
-
-  &__logo a
-    font-size: 30px
-    line-height: 35px
 
 .tabs
   display: flex
