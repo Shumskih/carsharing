@@ -174,7 +174,7 @@ export default {
   @media (min-width: 1887px)
     width: 60%
 
-  @media (min-width: 1920px)
+  @media (min-width: $screen-xl)
     width: 65%
 
   @media (max-width: $screen-xs)

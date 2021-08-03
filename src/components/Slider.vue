@@ -107,7 +107,7 @@ export default {
   @media (min-width: $screen-lg)
     width: 50%
 
-  @media (min-width: 1920px)
+  @media (min-width: $screen-xl)
     width: 37%
 
 .swiper
