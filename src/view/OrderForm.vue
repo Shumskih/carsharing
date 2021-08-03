@@ -40,9 +40,9 @@
             <h3 class="order__title">Ваш заказ:</h3>
             <ul>
               <li>
-                <p class="order__description">Пункт выдачи</p>
-                <div class="border--dotted"></div>
-                <p class="order__value">Ульяновск, Нариманова 42</p>
+                <span class="order__description">Пункт выдачи</span>
+                <span class="border--dotted"></span>
+                <span class="order__value">Ульяновск, Нариманова 42</span>
               </li>
             </ul>
             <div class="order__price"><span>Цена:</span> от 8 000 до 12 000 ₽</div>
@@ -101,7 +101,7 @@ export default {
           href: '#total',
           name: 'Итого'
         }
-      ],
+      ]
     }
   },
   methods: {
@@ -325,21 +325,22 @@ label
 
     & li
       display: flex
+      justify-content: space-between
       align-items: flex-end
 
   &__description
-    flex: 2
+    flex: 0.9
 
     @media (max-width: $screen-lg)
       font-size: 12px
       line-height: 12px
 
   & .border--dotted
-    flex: 1
+    flex-grow: 0.5
+    border-bottom: 1px dotted $gray
 
   &__value
-    flex: 2
-    margin-left: 11px
+    flex: 1
     text-align: right
     color: $gray
 
