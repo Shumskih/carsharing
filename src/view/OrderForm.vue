@@ -1,6 +1,6 @@
 <template>
   <section class="order-page">
-    <app-header/>
+    <app-header inner/>
     <div class="wrapper">
       <div class="tabs-wrapper">
         <div class="horizontal-line"></div>
@@ -305,6 +305,7 @@ input, .mx-input
   border: none
   border-bottom: 1px solid #999999
   outline: none
+  text-overflow: ellipsis
 
   &::placeholder
     color: $gray
@@ -321,6 +322,12 @@ input, .mx-input
 
 label
   margin-right: 8px
+
+.btn
+  @media (max-width: $screen-lg)
+    padding: 15px 30px
+    font-size: 15px
+    line-height: 18px
 
 .btn-disabled
   background-color: $gray-light
@@ -348,6 +355,7 @@ label
   display: flex
   flex-direction: column
   height: 100%
+  box-sizing: border-box
 
 .top
   display: flex
@@ -370,10 +378,17 @@ label
 
 .tabs
   display: flex
+  flex-wrap: wrap
   max-width: 1376px
   align-self: center
   margin: 8px auto 7px auto
   padding-left: 96px
+
+  @media (max-width: 1023px)
+    padding-left: 128px
+
+  @media (max-width: $screen-xs)
+    padding-left: 32px
 
   &__item
     display: flex
@@ -412,10 +427,21 @@ label
     max-width: 1376px
     margin: 0 auto
     padding-left: 96px
-    padding-right: 64px
+    padding-right: 32px
+
+    @media (max-width: 1023px)
+      flex-direction: column
+      height: auto
+      padding-left: 128px
+
+    @media (max-width: $screen-xs)
+      padding-left: 32px
 
   &__items-content
     width: 72%
+
+    @media (max-width: 1023px)
+      width: 100%
 
 .location
   &__data
@@ -436,10 +462,18 @@ label
 
     & > label
       text-align: right
-      flex: 0.11
+      flex: 1
+      max-width: 100px
+
+      @media (max-width: 364px)
+        flex: 0.4
 
     & > input
-      flex: 0.3
+      flex: 1
+      max-width: 224px
+
+      @media (max-width: $screen-xs)
+        flex: 0.4
 
 .horizontal-line
   border-top: 1px solid #eeeeee
@@ -448,6 +482,9 @@ label
   height: 100%
   border-left: 1px solid #eeeeee
 
+  @media (max-width: 1023px)
+    display: none
+
 .border--dotted
   border-bottom: 1px dotted #eeeeee
 
@@ -455,9 +492,19 @@ label
   padding-top: 32px
   padding-left: 32px
 
+  @media (max-width: 1023px)
+    padding-left: 0
+    padding-bottom: 50px
+
   &-wrapper
     position: relative
     width: calc(28% - 32px)
+
+    @media (max-width: 1023px)
+      width: 100%
+      max-width: 736px
+      padding-top: 0
+      padding-left: 0
 
     & .vertical-line
       position: absolute
@@ -479,6 +526,10 @@ label
   &__description
     flex: 2
 
+    @media (max-width: $screen-lg)
+      font-size: 12px
+      line-height: 12px
+
   & .border--dotted
     flex: 1
 
@@ -488,11 +539,19 @@ label
     text-align: right
     color: $gray
 
+    @media (max-width: $screen-lg)
+      font-size: 12px
+      line-height: 12px
+
   &__price
     font-weight: 400
     font-size: 16px
     line-height: 16px
     margin-bottom: 47px
+
+    @media (max-width: $screen-lg)
+      font-size: 14px
+      line-height: 14px
 
     & span
       font-weight: 500

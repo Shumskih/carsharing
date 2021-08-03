@@ -5,7 +5,12 @@
         <app-header/>
         <section class="cover">
           <div class="cover-center">
-            <h1 class="cover-center__title">Каршеринг <span class="main-accent display-block">Need for drive</span></h1>
+            <h1 class="cover-center__title">
+              Каршеринг
+              <span class="main-accent display-block">
+                Need for drive
+              </span>
+            </h1>
             <div class="cover-center__description">Поминутная аренда авто твоего города</div>
             <router-link :to="{ name: 'OrderForm' }" class="btn btn-standard not-xs">Забронировать</router-link>
           </div>
@@ -14,9 +19,9 @@
           </div>
         </section>
       </div>
-      <app-footer />
+      <app-footer/>
     </section>
-    <slider />
+    <slider/>
   </section>
 </template>
 
@@ -84,7 +89,7 @@ export default {
         line-height: 42px
         margin-top: -64px
 
-      @media (max-width: $screen-xs)
+      @media (max-width: $screen-xss)
         font-size: 32px
         line-height: 32px
         margin-top: -64px
@@ -104,17 +109,17 @@ export default {
         font-size: 24px
         line-height: 26px
 
-      @media (max-width: $screen-xs)
+      @media (max-width: $screen-xss)
         font-size: 18px
         line-height: 21px
         margin-top: 16px
         margin-bottom: 0
 
 .btn-big
-  @media (min-width: $screen-xs)
+  @media (min-width: $screen-xss)
     display: none
 
-  @media (max-width: $screen-xs)
+  @media (max-width: $screen-xss)
     display: block
     padding-top: 15px
     padding-bottom: 13px
@@ -132,6 +137,6 @@ export default {
       color: $white
 
 .not-xs
-  @media (max-width: $screen-xs)
+  @media (max-width: $screen-xss)
     display: none
 </style>

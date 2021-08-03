@@ -136,6 +136,6 @@ ul
   @media (min-width: $screen-lg)
     width: 63%
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     height: $fullViewportHeight
 </style>

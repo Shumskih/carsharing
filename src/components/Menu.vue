@@ -136,7 +136,7 @@ export default {
     &:hover
       cursor: pointer
 
-    @media (min-width: $screen-xs)
+    @media (min-width: $screen-xss)
       display: none
 
     @media (max-width: 480px)

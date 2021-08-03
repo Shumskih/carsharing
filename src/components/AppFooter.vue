@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .footer
   display: flex
   justify-content: space-between
