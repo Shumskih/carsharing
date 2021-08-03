@@ -116,7 +116,7 @@ ul
   justify-content: center
   width: 94%
 
-  @media (max-width: 1023px)
+  @media (max-width: $screen-md)
     width: 100%
 
   @media (min-width: $screen-lg)

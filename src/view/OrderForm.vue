@@ -30,84 +30,9 @@
               <img src="@/assets/img/map.jpg" alt="">
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model">
-            <div class="filter__model">
-              <ul>
-                <li v-for="(filter, index) in modelTypes" :key="index">
-                  <input name="model-filter" type="radio" :id="filter.type" :checked="index === 0">
-                  <label :for="filter.type">{{ filter.label }}</label>
-                </li>
-              </ul>
-            </div>
-            <div class="cars-list">
-              <div :class="['cars-list__car', {' active' : index === 1}]" v-for="(car, index) in carsList" :key="index">
-                <div class="car-data">
-                  <div class="car-name">{{ car.name }}</div>
-                  <span class="car-price">{{ car.priceMin }} - {{ car.priceMax }} ₽</span>
-                </div>
-                <img :src="require(`@/assets/img/${car.image}`)" alt="" class="car-img">
-              </div>
-            </div>
-          </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional">
-            <div class="filter filter__color">
-              <div class="filter__title">Цвет</div>
-              <ul>
-                <li>
-                  <input name="color-filter" type="radio" id="all-colors" checked>
-                  <label for="all-colors">Любой</label>
-                </li>
-                <li v-for="(filter, index) in colors" :key="index">
-                  <input name="color-filter" type="radio" :id="filter.type">
-                  <label :for="filter.type">{{ filter.label }}</label>
-                </li>
-              </ul>
-            </div>
-            <div class="filter filter__date">
-              <div class="filter__title">Дата аренды</div>
-              <div class="filter__data">
-                <div class="input-row">
-                  <label>С</label>
-                  <date-picker v-model="datePickerFrom" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
-                </div>
-                <div class="input-row">
-                  <label>По</label>
-                  <date-picker v-model="datePickerTo" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
-                </div>
-              </div>
-            </div>
-            <div class="filter filter__tariff">
-              <div class="filter__title">Тариф</div>
-              <ul>
-                <li v-for="(tariff, index) in tariffs" :key="index">
-                  <input name="tariff-filter" type="radio" :id="tariff.type" :checked="tariff.checked">
-                  <label :for="tariff.type">{{ tariff.name }}, {{ tariff.price }}</label>
-                </li>
-              </ul>
-            </div>
-            <div class="filter filter__additional">
-              <div class="filter__title">Доп услуги</div>
-              <ul>
-                <li v-for="(service, index) in additionalServices" :key="index">
-                  <input name="tariff-filter" type="checkbox" :id="service.id">
-                  <label :for="service.id">{{ service.name }}, {{ service.price }}</label>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total">
-            <div class="total">
-              <div class="total__car-info">
-                <div class="total__car-manufacturer">Hyndai, i30 N</div>
-                <div class="total__car-number">K 761 HA 73</div>
-                <div class="total__car-fuel"><span>Топливо</span> 100%</div>
-                <div class="total__car-date"><span>Доступна с</span> 12.06.2019 12:00</div>
-              </div>
-              <div class="total__car-img">
-                <img src="@/assets/img/cars/i-30-n.jpg">
-              </div>
-            </div>
-          </div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model"></div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional"></div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total"></div>
         </div>
         <div class="order-wrapper">
           <div class="vertical-line"></div>
@@ -123,9 +48,6 @@
             <div class="order__price"><span>Цена:</span> от 8 000 до 12 000 ₽</div>
             <div class="order__button">
               <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('location')">Выбрать модель</a>
-              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('model')">Дополнительно</a>
-              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('additional')">Итого</a>
-              <a href="" class="btn btn-standard" v-on:click.prevent v-if="isActive('total')" @click="confirmNewOrder()">Заказать</a>
             </div>
           </div>
         </div>
@@ -180,108 +102,9 @@ export default {
           name: 'Итого'
         }
       ],
-      modelTypes: [
-        {
-          type: 'all-models',
-          label: 'Все модели'
-        },
-        {
-          type: 'economy',
-          label: 'Эконом'
-        },
-        {
-          type: 'premium',
-          label: 'Премиум'
-        }
-      ],
-      carsList: [
-        {
-          name: 'Elantra',
-          priceMin: '12 000',
-          priceMax: '25 000',
-          image: 'cars/elantra.jpg'
-        },
-        {
-          name: 'i30 N',
-          priceMin: '10 000',
-          priceMax: '32 000',
-          image: 'cars/i-30-n.jpg'
-        },
-        {
-          name: 'Crete',
-          priceMin: '12 000',
-          priceMax: '25 000',
-          image: 'cars/creta.jpg'
-        },
-        {
-          name: 'Sonata',
-          priceMin: '10 000',
-          priceMax: '32 000',
-          image: 'cars/sonata.jpg'
-        },
-        {
-          name: 'Elantra v.2',
-          priceMin: '12 000',
-          priceMax: '25 000',
-          image: 'cars/elantra.jpg'
-        },
-        {
-          name: 'i30 N v.2',
-          priceMin: '10 000',
-          priceMax: '32 000',
-          image: 'cars/i-30-n.jpg'
-        }
-      ],
-      colors: [
-        {
-          type: 'red',
-          label: 'Красный'
-        },
-        {
-          type: 'blue',
-          label: 'Голубой'
-        }
-      ],
-      tariffs: [
-        {
-          name: 'Поминутно',
-          type: 'minute',
-          price: '7₽/мин',
-          checked: true
-        },
-        {
-          name: 'На сутки',
-          type: 'day',
-          price: '1999₽/сутки',
-          checked: false
-        }
-      ],
-      additionalServices: [
-        {
-          name: 'Полный бак',
-          id: 'full-petrol',
-          price: '500р'
-        },
-        {
-          name: 'Детское кресло',
-          id: 'baby-chair',
-          price: '200р'
-        },
-        {
-          name: 'Правый руль',
-          id: 'right-hand-drive',
-          price: '1600р'
-        }
-      ]
     }
   },
   methods: {
-    confirmNewOrder () {
-      this.confirmOrder = !this.confirmOrder
-    },
-    closeConfirmOrder () {
-      return true
-    },
     isLastOrderStep (index) {
       return (this.orderSteps.length - 1) === index
     },
@@ -299,7 +122,7 @@ export default {
 </script>
 
 <style lang="sass">
-input, .mx-input
+input
   width: 224px
   padding: 3px 8px
   border: none
@@ -331,25 +154,6 @@ label
 
 .btn-disabled
   background-color: $gray-light
-
-.mx-input
-  box-shadow: none
-  height: inherit
-  width: 267px
-  margin-bottom: 13px
-  border-radius: 0
-
-  &:hover, &:focus
-    border-bottom: 1px solid #999999
-
-.mx-icon-clear
-  font-size: 14px
-  right: -55px
-  color: $black
-  top: 15px
-
-.mx-icon-calendar
-  display: none
 
 .order-page
   display: flex
@@ -384,7 +188,7 @@ label
   margin: 8px auto 7px auto
   padding-left: 96px
 
-  @media (max-width: 1023px)
+  @media (max-width: $screen-md)
     padding-left: 128px
 
   @media (max-width: $screen-xs)
@@ -429,7 +233,7 @@ label
     padding-left: 96px
     padding-right: 32px
 
-    @media (max-width: 1023px)
+    @media (max-width: $screen-md)
       flex-direction: column
       height: auto
       padding-left: 128px
@@ -440,7 +244,7 @@ label
   &__items-content
     width: 72%
 
-    @media (max-width: 1023px)
+    @media (max-width: $screen-md)
       width: 100%
 
 .location
@@ -482,7 +286,7 @@ label
   height: 100%
   border-left: 1px solid #eeeeee
 
-  @media (max-width: 1023px)
+  @media (max-width: $screen-md)
     display: none
 
 .border--dotted
@@ -492,7 +296,7 @@ label
   padding-top: 32px
   padding-left: 32px
 
-  @media (max-width: 1023px)
+  @media (max-width: $screen-md)
     padding-left: 0
     padding-bottom: 50px
 
@@ -500,7 +304,7 @@ label
     position: relative
     width: calc(28% - 32px)
 
-    @media (max-width: 1023px)
+    @media (max-width: $screen-md)
       width: 100%
       max-width: 736px
       padding-top: 0
@@ -555,215 +359,4 @@ label
 
     & span
       font-weight: 500
-
-.filter
-  margin-bottom: 32px
-
-  &__title
-    margin-bottom: 16px
-
-  &__model, &__color, &__tariff, &__additional
-    margin-bottom: 48px
-
-    & ul
-      display: flex
-      justify-content: flex-start
-      margin: 0
-
-      & li
-        margin-right: 16px
-
-        & input[type="radio"]
-          display: none
-
-          &+label
-            display: flex
-            align-items: center
-            color: $gray
-
-          &+label::before
-            content: ''
-            width: 12px
-            height: 12px
-            border: 1px solid $gray
-            border-radius: 50%
-            background-repeat: no-repeat
-            background-position: center center
-            background-size: 50% 50%
-            margin-right: 8px
-
-          &:checked+label::before
-            border: 3px solid $main-accent
-
-          &:checked+label
-            color: $black
-
-  &__tariff
-      & ul
-        display: flex
-        flex-direction: column
-
-        & li
-          margin-bottom: 8px
-
-  &__additional
-    & ul
-      display: flex
-      justify-content: flex-start
-      flex-direction: column
-      margin: 0
-
-      & li
-        margin-bottom: 8px
-
-        & input[type="checkbox"]
-          display: none
-
-          &+label
-            position: relative
-            display: flex
-            align-items: center
-            color: $gray
-            margin-left: 20px
-
-          &+label::before
-            position: absolute
-            content: ''
-            left: -25px
-            width: 24px
-            height: 24px
-            background-repeat: no-repeat
-            background-position: center center
-            background-size: 50% 50%
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='11' height='11' stroke='%23999999'/%3e%3c/svg%3e")
-            margin-right: 8px
-
-          &:checked+label::before
-            position: absolute
-            left: -26px
-            width: 28px
-            height: 28px
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='15' height='12' viewBox='0 0 15 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='11' height='11' stroke='%230EC261'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.625 3.33333L2 5L6.875 10L15 1.66667L13.375 0L6.875 6.66667L3.625 3.33333Z' fill='%23121212'/%3e%3c/svg%3e")
-
-          &:checked+label
-            color: $black
-
-  &__data
-    & .input-row
-        & > label
-          flex: 0.02
-
-        & > input
-          flex: 0.3
-
-.cars-list
-  display: flex
-  flex-wrap: wrap
-
-  &__car
-    display: flex
-    flex-direction: column
-    justify-content: space-between
-    width: 368px
-    height: 224px
-    border: 1px solid $gray-light
-    padding: 16px
-    cursor: pointer
-
-    &:hover
-      border: 1px solid $gray
-
-    &.active
-      border: 1px solid $main-accent
-      cursor: default
-
-    & .car-name
-      font-size: 18px
-      line-height: 21px
-      font-weight: 500
-      text-transform: uppercase
-
-    & .car-price
-      font-size: 14px
-      line-height: 16px
-      color: $gray
-
-    & .car-img
-      width: 256px
-      height: 116px
-      align-self: flex-end
-
-.total
-  display: flex
-  justify-content: space-between
-  align-items: center
-
-  &__car
-    &-info
-      font-weight: 400
-      font-size: 14px
-      line-height: 16px
-
-    &-manufacturer
-      font-size: 18px
-      line-height: 21px
-      margin-bottom: 8px
-
-    &-number
-      display: inline-block
-      border: 1px solid $gray
-      border-radius: 4px
-      padding: 4px 8px 2px
-      margin-bottom: 8px
-
-    &-fuel, &-date
-      font-weight: 300
-      margin-bottom: 8px
-
-      & span
-        font-weight: 700
-
-  &__car-img
-    width: 50%
-
-    & img
-      width: 256px
-      height: 116px
-
-.confirm-order
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
-  display: flex
-  align-items: center
-  flex-direction: column
-
-  & div
-    font-weight: 400
-    font-size: 24px
-    line-height: 28px
-    color: $black
-    margin-bottom: 32px
-
-  & .btn-group
-    display: flex
-    justify-content: center
-
-    & .btn-crimson
-      border-radius: 4px
-
-    & a
-      margin-right: 16px
-
-  &__wrapper
-    position: fixed
-    top: 0
-    right: 0
-    bottom: 0
-    left: 0
-    width: 100%
-    height: 100%
-    overflow: auto
-    background: rgba(255, 255, 255, 0.9)
 </style>

@@ -67,7 +67,7 @@ export default {
   @media (max-width: $screen-lg)
     margin-right: 36px
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     width: 100%
     margin-left: 0
     margin-right: 0
@@ -84,7 +84,7 @@ export default {
         font-size: 60px
         line-height: 60px
 
-      @media (max-width: 480px)
+      @media (max-width: $screen-xs)
         font-size: 42px
         line-height: 42px
         margin-top: -64px

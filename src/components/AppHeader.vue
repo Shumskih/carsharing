@@ -60,7 +60,7 @@ export default {
     color: $gray
     margin-left: 8px
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     width: 100%
     flex-direction: column
     align-items: flex-end
@@ -76,7 +76,7 @@ export default {
     margin-left: 0
     margin-right: 0
 
-    @media (max-width: 1023px)
+    @media (max-width: $screen-md)
       padding-right: 16px
       padding-left: 128px
 

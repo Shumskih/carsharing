@@ -35,7 +35,7 @@ export default {
   &__copyright
     color: $gray
 
-    @media (max-width: 480px)
+    @media (max-width: $screen-xs)
       order: 1
       margin-top: 8px
       margin-right: 16px
@@ -43,7 +43,7 @@ export default {
   &__phone a
     color: $black
 
-    @media (max-width: 480px)
+    @media (max-width: $screen-xs)
       order: 0
       color: $main-accent
       margin-right: 16px
@@ -51,14 +51,14 @@ export default {
     &:hover, &:active
       color: $main-accent
 
-      @media (max-width: 480px)
+      @media (max-width: $screen-xs)
         &:hover
           color: $gray-light
 
         &:active
           color: #FFFFFF
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     flex-direction: column
     justify-content: space-around
     align-items: flex-end
