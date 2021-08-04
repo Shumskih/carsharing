@@ -6,8 +6,10 @@
         <div class="horizontal-line"></div>
         <ul class="tabs">
           <li class="tabs__item" v-for="(orderStep, index) in orderSteps" :key="index">
-            <a :href="orderStep.href" @click.prevent="setActive(trimSharpFromHref(orderStep.href))" :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }">{{ orderStep.name }}</a>
-            <icon v-if="!isLastOrderStep(index)" class="tabs__item-arrow" name="order-tab-arrow" width="6" height="8" viewBox="0 0 6 8" />
+            <a :href="orderStep.href" @click.prevent="setActive(trimSharpFromHref(orderStep.href))"
+               :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }">{{ orderStep.name }}</a>
+            <icon v-if="!isLastOrderStep(index)" class="tabs__item-arrow" name="order-tab-arrow" width="6" height="8"
+                  viewBox="0 0 6 8"/>
           </li>
         </ul>
         <div class="horizontal-line"></div>
@@ -30,7 +32,25 @@
               <img src="@/assets/img/map.jpg" alt="">
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model"></div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model">
+            <div class="filter__model">
+              <ul>
+                <li v-for="(filter, index) in modelTypes" :key="index">
+                  <input name="model-filter" type="radio" :id="filter.type" :checked="index === 0">
+                  <label :for="filter.type">{{ filter.label }}</label>
+                </li>
+              </ul>
+            </div>
+            <div class="cars-list">
+              <div :class="['cars-list__car', {' active' : index === 1}]" v-for="(car, index) in carsList" :key="index">
+                <div class="car-data">
+                  <div class="car-name">{{ car.name }}</div>
+                  <span class="car-price">{{ car.priceMin }} - {{ car.priceMax }} ₽</span>
+                </div>
+                  <img :src="require(`@/assets/img/${car.image}`)" alt="" class="car-img">
+              </div>
+            </div>
+          </div>
           <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional"></div>
           <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total"></div>
         </div>
@@ -87,6 +107,58 @@ export default {
         {
           href: '#total',
           name: 'Итого'
+        }
+      ],
+      modelTypes: [
+        {
+          type: 'all-models',
+          label: 'Все модели'
+        },
+        {
+          type: 'economy',
+          label: 'Эконом'
+        },
+        {
+          type: 'premium',
+          label: 'Премиум'
+        }
+      ],
+      carsList: [
+        {
+          name: 'Elantra',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/elantra.jpg'
+        },
+        {
+          name: 'i30 N',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/i-30-n.jpg'
+        },
+        {
+          name: 'Crete',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/creta.jpg'
+        },
+        {
+          name: 'Sonata',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/sonata.jpg'
+        },
+        {
+          name: 'Elantra v.2',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/elantra.jpg'
+        },
+        {
+          name: 'i30 N v.2',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/i-30-n.jpg'
         }
       ]
     }
@@ -360,4 +432,102 @@ label
 
     & span
       font-weight: 500
+
+.filter
+  margin-bottom: 32px
+
+  &__title
+    margin-bottom: 16px
+
+  &__model
+    margin-bottom: 48px
+
+    & ul
+      display: flex
+      flex-wrap: wrap
+      justify-content: flex-start
+      margin: 0
+
+      & li
+        margin-right: 16px
+        margin-bottom: 10px
+
+        & input[type="radio"]
+          display: none
+
+          & + label
+            display: flex
+            align-items: center
+            color: $gray
+
+          & + label::before
+            content: ''
+            width: 12px
+            height: 12px
+            border: 1px solid $gray
+            border-radius: 50%
+            background-repeat: no-repeat
+            background-position: center center
+            background-size: 50% 50%
+            margin-right: 8px
+
+          &:checked + label::before
+            border: 3px solid $main-accent
+
+          &:checked + label
+            color: $black
+
+.cars-list
+  display: flex
+  flex-wrap: wrap
+
+  &__car
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    width: 368px
+    height: 224px
+    border: 1px solid $gray-light
+    padding: 16px
+    cursor: pointer
+
+    @media (max-width: 1170px)
+      width: 316px
+      height: 193px
+
+    @media (max-width: 808px)
+      width: 295px
+      height: 180px
+
+    @media (max-width: $screen-sm)
+      width: 368px
+      height: 224px
+
+    @media (max-width: $screen-xs)
+      width: 316px
+      height: 193px
+
+    &:hover
+      border: 1px solid $gray
+
+    &.active
+      border: 1px solid $main-accent
+      cursor: default
+
+    & .car-name
+      font-size: 18px
+      line-height: 21px
+      font-weight: 500
+      text-transform: uppercase
+
+    & .car-price
+      font-size: 14px
+      line-height: 16px
+      color: $gray
+
+    & .car-img
+      height: auto
+      width: 100%
+      max-width: 256px
+      align-self: flex-end
 </style>
