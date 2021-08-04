@@ -2,10 +2,7 @@
   <div id="app">
     <Menu />
     <main class="main">
-      <router-view
-        @showFooter="runShowFooter($event)"
-        @showSlider="runShowSlider($event)"
-      />
+      <router-view/>
     </main>
     </div>
 </template>
@@ -43,14 +40,6 @@ export default {
           prevEl: '.swiper-button-prev'
         }
       }
-    }
-  },
-  methods: {
-    runShowFooter (event) {
-      this.showFooter = event
-    },
-    runShowSlider (event) {
-      this.showSlider = event
     }
   }
 }
