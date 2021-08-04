@@ -70,8 +70,6 @@ export default {
   },
   data () {
     return {
-      datePickerFrom: null,
-      datePickerTo: null,
       activeItem: 'location',
       orderSteps: [
         {
