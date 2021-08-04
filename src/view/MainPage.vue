@@ -59,7 +59,6 @@ export default {
   display: flex
   flex-direction: column
   justify-content: space-between
-  width: 100%
   margin-left: 128px
   margin-right: 64px
   margin-top: 123px
