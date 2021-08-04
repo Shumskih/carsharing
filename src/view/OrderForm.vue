@@ -41,7 +41,6 @@
             <ul>
               <li>
                 <span class="order__description">Пункт выдачи</span>
-                <span class="border--dotted"></span>
                 <span class="order__value">Ульяновск, Нариманова 42</span>
               </li>
             </ul>
@@ -122,6 +121,9 @@ export default {
 </script>
 
 <style lang="sass">
+*, *:after, *:before
+  box-sizing: border-box
+
 input
   width: 224px
   padding: 3px 8px
@@ -317,36 +319,49 @@ label
     font-weight: 500
     font-size: 18px
     line-height: 21px
-    margin-bottom: 26px
+    padding-bottom: 52px
     text-align: right
 
   & ul
     padding-bottom: 32px
 
     & li
-      display: flex
-      justify-content: space-between
-      align-items: flex-end
+      //display: flex
+      //justify-content: space-between
+      //align-items: flex-end
+      position: relative
+
+      &:before
+        content: ''
+        position: absolute
+        bottom: 2px
+        width: 100%
+        height: 0
+        line-height: 0
+        border-bottom: 1px dotted $gray
+
+  &__description, &__value
+    position: absolute
+    background-color: #fff
+    z-index: 2
+    bottom: 0
+
+    @media (max-width: $screen-lg)
+      font-size: 12px
+      line-height: 12px
 
   &__description
-    flex: 0.9
-
-    @media (max-width: $screen-lg)
-      font-size: 12px
-      line-height: 12px
-
-  & .border--dotted
-    flex-grow: 0.5
-    border-bottom: 1px dotted $gray
+    display: inline
+    padding-right: 11px
 
   &__value
-    flex: 1
+    position: absolute
+    max-width: 112px
+    right: 0
     text-align: right
-    color: $gray
 
     @media (max-width: $screen-lg)
-      font-size: 12px
-      line-height: 12px
+      max-width: 97px
 
   &__price
     font-weight: 400

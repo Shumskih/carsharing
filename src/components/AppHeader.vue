@@ -70,7 +70,7 @@ export default {
     padding-right: 16px
 
   &-inner
-    padding-right: 64px
+    padding-right: 32px
     padding-left: 96px
     margin-bottom: 23.5px
     margin-left: 0
