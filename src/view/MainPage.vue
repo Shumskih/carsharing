@@ -91,7 +91,6 @@ export default {
       @media (max-width: $screen-xss)
         font-size: 32px
         line-height: 32px
-        margin-top: -64px
 
       & span
         margin-top: 6px

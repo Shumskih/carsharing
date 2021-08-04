@@ -51,15 +51,6 @@
           </div>
         </div>
       </section>
-      <div class="confirm-order__wrapper" v-if="confirmOrder">
-        <div class="confirm-order">
-          <div>Подтвердить заказ</div>
-          <div class="btn-group">
-            <router-link :to="{ name: 'OrderConfirmed' }" class="btn btn-standard">Забронировать</router-link>
-            <a href="#" v-on:click.prevent class="btn btn-crimson" @click="confirmNewOrder()">Вернуться</a>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </template>
@@ -81,7 +72,6 @@ export default {
     return {
       datePickerFrom: null,
       datePickerTo: null,
-      confirmOrder: false,
       activeItem: 'location',
       orderSteps: [
         {
@@ -326,9 +316,6 @@ label
     padding-bottom: 32px
 
     & li
-      //display: flex
-      //justify-content: space-between
-      //align-items: flex-end
       position: relative
 
       &:before

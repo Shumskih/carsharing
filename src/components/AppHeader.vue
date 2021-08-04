@@ -42,7 +42,6 @@ export default {
     margin-top: 34px
 
   @media (max-width: $screen-md)
-    margin-left: 128px
     margin-right: 36px
 
   &__logo a

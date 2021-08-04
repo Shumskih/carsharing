@@ -49,12 +49,6 @@ export default {
   components: {
     Icon
   },
-  props: {
-    fixed: {
-      default: false,
-      type: Boolean
-    }
-  },
   data () {
     return {
       menuOpen: false,
@@ -75,10 +69,7 @@ export default {
           path: '/',
           label: 'Обслуживание'
         }
-      ],
-      isNotMainPage () {
-        return this.$route.path !== '/'
-      }
+      ]
     }
   },
   methods: {

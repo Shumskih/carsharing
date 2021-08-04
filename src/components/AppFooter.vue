@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer" v-if="showFooter">
+    <footer class="footer">
       <div class="footer__copyright">© 2016-2019 «Need for drive»</div>
       <div class="footer__phone"><a href="tel: +74952342244">8 (495) 234-22-44</a></div>
     </footer>
@@ -7,13 +7,7 @@
 
 <script>
 export default {
-  name: 'AppFooter',
-  props: {
-    showFooter: {
-      default: true,
-      type: Boolean
-    }
-  }
+  name: 'AppFooter'
 }
 </script>
 
@@ -29,7 +23,6 @@ export default {
   margin-bottom: 32px
 
   @media (max-width: $screen-md)
-    margin-left: 128px
     margin-right: 36px
 
   &__copyright
