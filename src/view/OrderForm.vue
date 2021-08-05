@@ -5,24 +5,53 @@
       <div class="tabs-wrapper">
         <div class="horizontal-line"></div>
         <ul class="tabs">
-          <li class="tabs__item" v-for="(orderStep, index) in orderSteps" :key="index">
-            <a :href="orderStep.href" @click.prevent="setActive(trimSharpFromHref(orderStep.href))" :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }">{{ orderStep.name }}</a>
-            <icon v-if="!isLastOrderStep(index)" class="tabs__item-arrow" name="order-tab-arrow" width="6" height="8" viewBox="0 0 6 8" />
+          <li
+            class="tabs__item"
+            v-for="(orderStep, index) in orderSteps"
+            :key="index"
+          >
+            <a
+              :href="orderStep.href"
+              @click.prevent="setActive(trimSharpFromHref(orderStep.href))"
+              :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }"
+            >
+              {{ orderStep.name }}
+            </a>
+            <icon
+              v-if="!isLastOrderStep(index)"
+              class="tabs__item-arrow"
+              name="order-tab-arrow"
+              width="6"
+              height="8"
+              viewBox="0 0 6 8"
+            />
           </li>
         </ul>
         <div class="horizontal-line"></div>
       </div>
       <section class="tabs__content-wrapper">
         <div class="tabs__items-content">
-          <div class="tabs__item-content" :class="{ 'active': isActive('location') }" id="location">
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('location') }"
+            id="location"
+          >
             <div class="location__data">
               <div class="input-row">
                 <label for="city">Город</label>
-                <input type="search" id="city" placeholder="Начните вводить город">
+                <input
+                  type="search"
+                  id="city"
+                  placeholder="Начните вводить город"
+                >
               </div>
               <div class="input-row">
                 <label for="pick-up-point">Пункт выдачи</label>
-                <input type="search" id="pick-up-point" placeholder="Начните вводить пункт выдачи">
+                <input
+                  type="search"
+                  id="pick-up-point"
+                  placeholder="Начните вводить пункт выдачи"
+                >
               </div>
             </div>
             <div class="location__map">
@@ -30,9 +59,21 @@
               <img src="@/assets/img/map.jpg" alt="">
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model"></div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional"></div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total"></div>
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('model') }"
+            id="model"
+          ></div>
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('additional') }"
+            id="additional"
+          ></div>
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('total') }"
+            id="total"
+          ></div>
         </div>
         <div class="order-wrapper">
           <div class="vertical-line"></div>
@@ -44,9 +85,17 @@
                 <span class="order__value">Ульяновск, Нариманова 42</span>
               </li>
             </ul>
-            <div class="order__price"><span>Цена:</span> от 8 000 до 12 000 ₽</div>
+            <div class="order__price">
+              <span>Цена:</span> от 8 000 до 12 000 ₽
+            </div>
             <div class="order__button">
-              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('location')">Выбрать модель</a>
+              <a
+                href=""
+                class="btn btn-disabled"
+                v-on:click.prevent
+                v-if="isActive('location')">
+                Выбрать модель
+              </a>
             </div>
           </div>
         </div>
@@ -57,7 +106,6 @@
 
 <script>
 import AppHeader from '../components/AppHeader'
-import Icon from '@/components/Icon'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 
@@ -65,7 +113,6 @@ export default {
   name: 'Order',
   components: {
     AppHeader,
-    Icon,
     DatePicker
   },
   data () {
@@ -131,7 +178,7 @@ input
       -webkit-appearance: none
       width: 8px
       height: 8px
-      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0.805714L7.19429 0L4 3.19429L0.805714 0L0 0.805714L3.19429 4L0 7.19429L0.805714 8L4 4.80571L7.19429 8L8 7.19429L4.80571 4L8 0.805714Z' fill='%23121212'/%3E%3C/svg%3E")
+      background-image: url('../assets/img/svg/clear-input.svg')
 
 label
   margin-right: 8px

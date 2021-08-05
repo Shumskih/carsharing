@@ -57,13 +57,11 @@
 </template>
 
 <script>
-import Icon from './Icon'
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 
 export default {
   name: 'Slider',
   components: {
-    Icon,
     Swiper,
     SwiperSlide
   },
