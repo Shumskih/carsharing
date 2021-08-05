@@ -42,13 +42,9 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon'
 
 export default {
   name: 'Menu',
-  components: {
-    Icon
-  },
   data () {
     return {
       menuOpen: false,
