@@ -51,7 +51,52 @@
               </div>
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional"></div>
+          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional">
+            <div class="filter filter__color">
+              <div class="filter__title">Цвет</div>
+              <ul>
+                <li>
+                  <input name="color-filter" type="radio" id="all-colors" checked>
+                  <label for="all-colors">Любой</label>
+                </li>
+                <li v-for="(filter, index) in colors" :key="index">
+                  <input name="color-filter" type="radio" :id="filter.type">
+                  <label :for="filter.type">{{ filter.label }}</label>
+                </li>
+              </ul>
+            </div>
+            <div class="filter filter__date">
+              <div class="filter__title">Дата аренды</div>
+              <div class="filter__data">
+                <div class="input-row">
+                  <label class="datepicker">С</label>
+                  <date-picker v-model="datePickerFrom" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
+                </div>
+                <div class="input-row">
+                  <label class="datepicker">По</label>
+                  <date-picker v-model="datePickerTo" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
+                </div>
+              </div>
+            </div>
+            <div class="filter filter__tariff">
+              <div class="filter__title">Тариф</div>
+              <ul>
+                <li v-for="(tariff, index) in tariffs" :key="index">
+                  <input name="tariff-filter" type="radio" :id="tariff.type" :checked="tariff.checked">
+                  <label :for="tariff.type">{{ tariff.name }}, {{ tariff.price }}</label>
+                </li>
+              </ul>
+            </div>
+            <div class="filter filter__additional">
+              <div class="filter__title">Доп услуги</div>
+              <ul>
+                <li v-for="(service, index) in additionalServices" :key="index">
+                  <input name="tariff-filter" type="checkbox" :id="service.id">
+                  <label :for="service.id">{{ service.name }}, {{ service.price }}</label>
+                </li>
+              </ul>
+            </div>
+          </div>
           <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total"></div>
         </div>
         <div class="order-wrapper">
@@ -90,6 +135,8 @@ export default {
   },
   data () {
     return {
+      datePickerFrom: null,
+      datePickerTo: null,
       activeItem: 'location',
       orderSteps: [
         {
@@ -160,6 +207,47 @@ export default {
           priceMax: '32 000',
           image: 'cars/i-30-n.jpg'
         }
+      ],
+      colors: [
+        {
+          type: 'red',
+          label: 'Красный'
+        },
+        {
+          type: 'blue',
+          label: 'Голубой'
+        }
+      ],
+      tariffs: [
+        {
+          name: 'Поминутно',
+          type: 'minute',
+          price: '7₽/мин',
+          checked: true
+        },
+        {
+          name: 'На сутки',
+          type: 'day',
+          price: '1999₽/сутки',
+          checked: false
+        }
+      ],
+      additionalServices: [
+        {
+          name: 'Полный бак',
+          id: 'full-petrol',
+          price: '500р'
+        },
+        {
+          name: 'Детское кресло',
+          id: 'baby-chair',
+          price: '200р'
+        },
+        {
+          name: 'Правый руль',
+          id: 'right-hand-drive',
+          price: '1600р'
+        }
       ]
     }
   },
@@ -184,7 +272,7 @@ export default {
 *, *:after, *:before
   box-sizing: border-box
 
-input
+input, .mx-input
   width: 224px
   padding: 3px 8px
   border: none
@@ -207,6 +295,28 @@ input
 
 label
   margin-right: 8px
+
+.mx-input
+  box-shadow: none
+  height: inherit
+  width: 267px
+  margin-bottom: 13px
+  border-radius: 0
+
+  @media (max-width: 360px)
+    width: 230px
+
+  &:hover, &:focus
+    border-bottom: 1px solid #999999
+
+.mx-icon-clear
+  font-size: 14px
+  right: -55px
+  color: $black
+  top: 15px
+
+.mx-icon-calendar
+  display: none
 
 .btn
   @media (max-width: $screen-lg)
@@ -331,6 +441,10 @@ label
       flex: 1
       max-width: 100px
 
+      &.datepicker
+        max-width: 18px
+        min-width: 18px
+
       @media (max-width: 364px)
         flex: 0.4
 
@@ -439,7 +553,7 @@ label
   &__title
     margin-bottom: 16px
 
-  &__model
+  &__model, &__color, &__tariff, &__additional
     margin-bottom: 48px
 
     & ul
@@ -473,6 +587,56 @@ label
 
           &:checked + label::before
             border: 3px solid $main-accent
+
+          &:checked + label
+            color: $black
+
+  &__tariff
+    & ul
+      display: flex
+      flex-direction: column
+
+      & li
+        margin-bottom: 8px
+
+  &__additional
+    & ul
+      display: flex
+      justify-content: flex-start
+      flex-direction: column
+      margin: 0
+
+      & li
+        margin-bottom: 8px
+
+        & input[type="checkbox"]
+          display: none
+
+          & + label
+            position: relative
+            display: flex
+            align-items: center
+            color: $gray
+            margin-left: 20px
+
+          & + label::before
+            position: absolute
+            content: ''
+            left: -25px
+            width: 24px
+            height: 24px
+            background-repeat: no-repeat
+            background-position: center center
+            background-size: 50% 50%
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='11' height='11' stroke='%23999999'/%3e%3c/svg%3e")
+            margin-right: 8px
+
+          &:checked + label::before
+            position: absolute
+            left: -26px
+            width: 28px
+            height: 28px
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='15' height='12' viewBox='0 0 15 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='11' height='11' stroke='%230EC261'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.625 3.33333L2 5L6.875 10L15 1.66667L13.375 0L6.875 6.66667L3.625 3.33333Z' fill='%23121212'/%3e%3c/svg%3e")
 
           &:checked + label
             color: $black
