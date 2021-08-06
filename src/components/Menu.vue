@@ -42,13 +42,9 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon'
 
 export default {
   name: 'Menu',
-  components: {
-    Icon
-  },
   data () {
     return {
       menuOpen: false,
@@ -82,6 +78,7 @@ export default {
 
 <style lang="sass" scoped>
 .menu
+  position: fixed
   display: flex
   flex-direction: column
   justify-content: space-between
@@ -90,10 +87,10 @@ export default {
   height: $fullViewportHeight
   background-color: $dark-blue
 
-  @media (max-width: 1023px)
+  @media (max-width: $screen-md)
     width: 86px
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     display: none
 
 .lang
@@ -126,20 +123,20 @@ export default {
     &:hover
       cursor: pointer
 
-    @media (min-width: $screen-xs)
+    @media (min-width: $screen-xss)
       display: none
 
-    @media (max-width: 480px)
+    @media (max-width: $screen-xs)
       display: block
       position: absolute
       top: 21px
       left: 16px
 
 .menu-open
+  position: fixed
   display: flex
   flex-direction: column
   justify-content: center
-  position: absolute
   top: 0
   left: 0
   height: $fullViewportHeight
@@ -164,10 +161,10 @@ export default {
   @media (min-width: 1887px)
     width: 60%
 
-  @media (min-width: 1920px)
+  @media (min-width: $screen-xl)
     width: 65%
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     justify-content: flex-start
 
   &__close-btn
@@ -178,7 +175,7 @@ export default {
     margin-left: 20px
     cursor: pointer
 
-    @media (max-width: 480px)
+    @media (max-width: $screen-xs)
       margin-top: 21px
       margin-left: 22px
 
@@ -194,7 +191,7 @@ export default {
       font-size: 28px
       line-height: 33px
 
-    @media (max-width: 480px)
+    @media (max-width: $screen-xs)
       font-size: 22px
       line-height: 26px
       margin-top: 80px
@@ -213,7 +210,7 @@ export default {
   &__lang
     display: none
 
-    @media (max-width: 480px)
+    @media (max-width: $screen-xs)
       display: block
       position: absolute
       font-weight: 700
@@ -240,7 +237,7 @@ export default {
           color: $main-accent
 
 .cover
-  position: absolute
+  position: fixed
   top: 0
   left: 0
   width: 100%
@@ -253,7 +250,7 @@ export default {
   display: flex
   margin-left: 128px
 
-  @media (max-width: 480px)
+  @media (max-width: $screen-xs)
     margin-left: 28px
 
   & a
