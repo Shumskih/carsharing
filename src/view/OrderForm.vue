@@ -106,7 +106,7 @@
             id="total"
           ></div>
         </div>
-        <div class="order-wrapper">
+        <div class="order-wrapper" :class="{ modal: this.modal }">
           <div class="vertical-line"></div>
           <div class="order">
             <h3 class="order__title">Ваш заказ:</h3>
@@ -132,6 +132,7 @@
         </div>
       </section>
     </div>
+    <div class="shopping-basket" @click="openModal" :class="{ close: this.close }"></div>
   </section>
 </template>
 
@@ -148,6 +149,8 @@ export default {
   },
   data () {
     return {
+      modal: false,
+      close: false,
       activeItem: 'location',
       orderSteps: [
         {
@@ -222,6 +225,10 @@ export default {
     }
   },
   methods: {
+    openModal () {
+      this.modal = !this.modal
+      this.close = !this.close
+    },
     isLastOrderStep (index) {
       return (this.orderSteps.length - 1) === index
     },
@@ -341,6 +348,7 @@ label
         display: block
 
   &__content-wrapper
+    position: relative
     display: flex
     justify-content: space-between
     font-weight: 300
@@ -421,14 +429,21 @@ label
     padding-bottom: 50px
 
   &-wrapper
-    position: relative
     width: calc(28% - 32px)
 
     @media (max-width: $screen-md)
-      width: 100%
-      max-width: 736px
+      display: none
+      position: absolute
+      top: 0
+      right: 0
+      width: 320px
+      max-width: 320px
+      height: 100%
       padding-top: 0
-      padding-left: 0
+      padding-left: 20px
+      padding-right: 20px
+      background: rgba(255, 255, 255, 0.9)
+      z-index: 2
 
     & .vertical-line
       position: absolute
@@ -437,7 +452,7 @@ label
     font-weight: 500
     font-size: 18px
     line-height: 21px
-    padding-bottom: 52px
+    padding-bottom: 16px
     text-align: right
 
   & ul
@@ -445,6 +460,7 @@ label
 
     & li
       position: relative
+      height: 35px
 
       &:before
         content: ''
@@ -588,4 +604,23 @@ label
       width: 100%
       max-width: 256px
       align-self: flex-end
+
+.shopping-basket
+  @media (max-width: $screen-md)
+    display: block
+    position: absolute
+    width: 40px
+    height: 40px
+    right: 40px
+    bottom: 40px
+    background-image: url('../assets/img/svg/basket.svg')
+    background-repeat: no-repeat
+    cursor: pointer
+    z-index: 2
+
+  &.close
+    background-image: url('../assets/img/svg/close.svg')
+
+.modal
+  display: block
 </style>
