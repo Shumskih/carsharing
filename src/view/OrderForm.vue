@@ -73,7 +73,9 @@
                     :id="filter.type"
                     :checked="index === 0"
                   >
-                  <label :for="filter.type">{{ filter.label }}</label>
+                  <label :for="filter.type">
+                    {{ filter.label }}
+                  </label>
                 </li>
               </ul>
             </div>
@@ -84,8 +86,12 @@
                 :key="index"
               >
                 <div class="car-data">
-                  <div class="car-name">{{ car.name }}</div>
-                  <span class="car-price">{{ car.priceMin }} - {{ car.priceMax }} ₽</span>
+                  <div class="car-name">
+                    {{ car.name }}
+                  </div>
+                  <span class="car-price">
+                    {{ car.priceMin }} - {{ car.priceMax }} ₽
+                  </span>
                 </div>
                   <img
                     :src="require(`@/assets/img/${car.image}`)"
@@ -109,11 +115,17 @@
         <div class="order-wrapper" :class="{ modal: this.modal }">
           <div class="vertical-line"></div>
           <div class="order">
-            <h3 class="order__title">Ваш заказ:</h3>
+            <h3 class="order__title">
+              Ваш заказ:
+            </h3>
             <ul>
               <li>
-                <span class="order__description">Пункт выдачи</span>
-                <span class="order__value">Ульяновск, Нариманова 42</span>
+                <span class="order__description">
+                  Пункт выдачи
+                </span>
+                <span class="order__value">
+                  Ульяновск, Нариманова 42
+                </span>
               </li>
             </ul>
             <div class="order__price">
@@ -139,7 +151,11 @@
         </div>
       </section>
     </div>
-    <div class="shopping-basket" @click="openModal" :class="{ close: this.close }"></div>
+    <div
+      class="shopping-basket"
+      @click="toggleModal"
+      :class="{ close: this.close }"
+    ></div>
   </section>
 </template>
 
@@ -232,7 +248,7 @@ export default {
     }
   },
   methods: {
-    openModal () {
+    toggleModal () {
       this.modal = !this.modal
       this.close = !this.close
     },
