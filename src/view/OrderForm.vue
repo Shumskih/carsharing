@@ -71,7 +71,7 @@
                     name="model-filter"
                     type="radio"
                     :id="filter.type"
-                    :checked="index === 0"
+                    :checked="filter.checked"
                   >
                   <label :for="filter.type">
                     {{ filter.label }}
@@ -81,9 +81,10 @@
             </div>
             <div class="cars-list">
               <div
-                :class="['cars-list__car', {' active' : index === 1}]"
+                :class="['cars-list__car', {' active' : car.checked}]"
                 v-for="(car, index) in carsList"
                 :key="index"
+                @click="setCheckedCar(index)"
               >
                 <div class="car-data">
                   <div class="car-name">
@@ -196,15 +197,18 @@ export default {
       modelTypes: [
         {
           type: 'all-models',
-          label: 'Все модели'
+          label: 'Все модели',
+          checked: true
         },
         {
           type: 'economy',
-          label: 'Эконом'
+          label: 'Эконом',
+          checked: false
         },
         {
           type: 'premium',
-          label: 'Премиум'
+          label: 'Премиум',
+          checked: false
         }
       ],
       carsList: [
@@ -212,42 +216,57 @@ export default {
           name: 'Elantra',
           priceMin: '12 000',
           priceMax: '25 000',
-          image: 'cars/elantra.jpg'
+          image: 'cars/elantra.jpg',
+          checked: false
         },
         {
           name: 'i30 N',
           priceMin: '10 000',
           priceMax: '32 000',
-          image: 'cars/i-30-n.jpg'
+          image: 'cars/i-30-n.jpg',
+          checked: true
         },
         {
           name: 'Crete',
           priceMin: '12 000',
           priceMax: '25 000',
-          image: 'cars/creta.jpg'
+          image: 'cars/creta.jpg',
+          checked: false
         },
         {
           name: 'Sonata',
           priceMin: '10 000',
           priceMax: '32 000',
-          image: 'cars/sonata.jpg'
+          image: 'cars/sonata.jpg',
+          checked: false
         },
         {
           name: 'Elantra v.2',
           priceMin: '12 000',
           priceMax: '25 000',
-          image: 'cars/elantra.jpg'
+          image: 'cars/elantra.jpg',
+          checked: false
         },
         {
           name: 'i30 N v.2',
           priceMin: '10 000',
           priceMax: '32 000',
-          image: 'cars/i-30-n.jpg'
+          image: 'cars/i-30-n.jpg',
+          checked: false
         }
       ]
     }
   },
   methods: {
+    setCheckedCar (index) {
+      for (let key in this.carsList) {
+        if (this.carsList[key].checked) {
+          this.carsList[key].checked = false
+        }
+      }
+
+      this.carsList[index].checked = true
+    },
     toggleModal () {
       this.modal = !this.modal
       this.close = !this.close
