@@ -127,6 +127,13 @@
                 v-if="isActive('location')">
                 Выбрать модель
               </a>
+              <a
+                href=""
+                class="btn btn-disabled"
+                v-on:click.prevent
+                v-if="isActive('model')">
+                Дополнительно
+              </a>
             </div>
           </div>
         </div>
@@ -433,7 +440,7 @@ label
 
     @media (max-width: $screen-md)
       display: none
-      position: absolute
+      position: fixed
       top: 0
       right: 0
       width: 320px
@@ -443,10 +450,17 @@ label
       padding-left: 20px
       padding-right: 20px
       background: rgba(255, 255, 255, 0.9)
+      overflow-y: auto
       z-index: 2
 
     & .vertical-line
       position: absolute
+
+      @media (max-width: $screen-md)
+        display: block
+        position: fixed
+        top: 0
+        right: 320px
 
   &__title
     font-weight: 500
@@ -608,7 +622,7 @@ label
 .shopping-basket
   @media (max-width: $screen-md)
     display: block
-    position: absolute
+    position: fixed
     width: 40px
     height: 40px
     right: 40px
@@ -619,7 +633,15 @@ label
     z-index: 2
 
   &.close
+    top: 34px
+    right: 274px
+    width: 20px
+    height: 20px
     background-image: url('../assets/img/svg/close.svg')
+
+    @media (max-width: $screen-xss)
+      top: 27px
+      right: 279px
 
 .modal
   display: block
