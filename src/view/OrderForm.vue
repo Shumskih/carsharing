@@ -484,6 +484,9 @@ label
   color: $black
   top: 15px
 
+  @media (max-width: 360px)
+    right: -15px
+
 .mx-icon-calendar
   display: none
 
@@ -813,7 +816,7 @@ label
             background-repeat: no-repeat
             background-position: center center
             background-size: 50% 50%
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='11' height='11' stroke='%23999999'/%3e%3c/svg%3e")
+            background-image: url("../assets/img/svg/checkbox.svg")
             margin-right: 8px
 
           &:checked + label::before
@@ -821,7 +824,7 @@ label
             left: -26px
             width: 28px
             height: 28px
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='15' height='12' viewBox='0 0 15 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0.5' y='0.5' width='11' height='11' stroke='%230EC261'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.625 3.33333L2 5L6.875 10L15 1.66667L13.375 0L6.875 6.66667L3.625 3.33333Z' fill='%23121212'/%3e%3c/svg%3e")
+            background-image: url("../assets/img/svg/checkbox-checked.svg")
 
           &:checked + label
             color: $black
