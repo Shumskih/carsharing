@@ -108,46 +108,89 @@
             id="additional"
           >
             <div class="filter filter__color">
-              <div class="filter__title">Цвет</div>
+              <div class="filter__title">
+                Цвет
+              </div>
               <ul>
-                <li>
-                  <input name="color-filter" type="radio" id="all-colors" checked>
-                  <label for="all-colors">Любой</label>
-                </li>
                 <li v-for="(filter, index) in colors" :key="index">
-                  <input name="color-filter" type="radio" :id="filter.type">
-                  <label :for="filter.type">{{ filter.label }}</label>
+                  <input
+                    name="color-filter"
+                    type="radio"
+                    :id="filter.type"
+                    :checked="filter.checked"
+                  >
+                  <label
+                    :for="filter.type"
+                    @click="setCheckedColor(index)"
+                  >
+                    {{ filter.label }}
+                  </label>
                 </li>
               </ul>
             </div>
             <div class="filter filter__date">
-              <div class="filter__title">Дата аренды</div>
+              <div class="filter__title">
+                Дата аренды
+              </div>
               <div class="filter__data">
                 <div class="input-row">
-                  <label class="datepicker">С</label>
-                  <date-picker v-model="datePickerFrom" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
+                  <label class="datepicker">
+                    С
+                  </label>
+                  <date-picker
+                    v-model="datePickerFrom"
+                    type="datetime"
+                    placeholder="Введите дату и время"
+                    id="date-from"
+                    format="DD.MM.YYYY HH:mm"
+                  />
                 </div>
                 <div class="input-row">
-                  <label class="datepicker">По</label>
-                  <date-picker v-model="datePickerTo" type="datetime" placeholder="Введите дату и время" id="date-from" format="DD.MM.YYYY HH:mm" />
+                  <label class="datepicker">
+                    По
+                  </label>
+                  <date-picker
+                    v-model="datePickerTo"
+                    type="datetime"
+                    placeholder="Введите дату и время"
+                    id="date-from"
+                    format="DD.MM.YYYY HH:mm"
+                  />
                 </div>
               </div>
             </div>
             <div class="filter filter__tariff">
-              <div class="filter__title">Тариф</div>
+              <div class="filter__title">
+                Тариф
+              </div>
               <ul>
                 <li v-for="(tariff, index) in tariffs" :key="index">
-                  <input name="tariff-filter" type="radio" :id="tariff.type" :checked="tariff.checked">
-                  <label :for="tariff.type">{{ tariff.name }}, {{ tariff.price }}</label>
+                  <input
+                    name="tariff-filter"
+                    type="radio"
+                    :id="tariff.type"
+                    :checked="tariff.checked"
+                  >
+                  <label :for="tariff.type">
+                    {{ tariff.name }}, {{ tariff.price }}
+                  </label>
                 </li>
               </ul>
             </div>
             <div class="filter filter__additional">
-              <div class="filter__title">Доп услуги</div>
+              <div class="filter__title">
+                Доп услуги
+              </div>
               <ul>
                 <li v-for="(service, index) in additionalServices" :key="index">
-                  <input name="tariff-filter" type="checkbox" :id="service.id">
-                  <label :for="service.id">{{ service.name }}, {{ service.price }}</label>
+                  <input
+                    name="tariff-filter"
+                    type="checkbox"
+                    :id="service.id"
+                  >
+                  <label :for="service.id">
+                    {{ service.name }}, {{ service.price }}
+                  </label>
                 </li>
               </ul>
             </div>
@@ -304,12 +347,19 @@ export default {
       ],
       colors: [
         {
+          type: 'any',
+          label: 'Любой',
+          checked: true
+        },
+        {
           type: 'red',
-          label: 'Красный'
+          label: 'Красный',
+          checked: false
         },
         {
           type: 'blue',
-          label: 'Голубой'
+          label: 'Голубой',
+          checked: false
         }
       ],
       tariffs: [
@@ -330,17 +380,20 @@ export default {
         {
           name: 'Полный бак',
           id: 'full-petrol',
-          price: '500р'
+          price: '500р',
+          checked: false
         },
         {
           name: 'Детское кресло',
           id: 'baby-chair',
-          price: '200р'
+          price: '200р',
+          checked: false
         },
         {
           name: 'Правый руль',
           id: 'right-hand-drive',
-          price: '1600р'
+          price: '1600р',
+          checked: false
         }
       ]
     }
@@ -354,6 +407,15 @@ export default {
       }
 
       this.carsList[index].checked = true
+    },
+    setCheckedColor (index) {
+      for (let key in this.colors) {
+        if (this.colors[key].checked) {
+          this.colors[key].checked = false
+        }
+      }
+
+      this.colors[index].checked = true
     },
     toggleModal () {
       this.modal = !this.modal
