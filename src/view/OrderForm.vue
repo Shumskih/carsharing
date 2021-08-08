@@ -5,26 +5,53 @@
       <div class="tabs-wrapper">
         <div class="horizontal-line"></div>
         <ul class="tabs">
-          <li class="tabs__item" v-for="(orderStep, index) in orderSteps" :key="index">
-            <a :href="orderStep.href" @click.prevent="setActive(trimSharpFromHref(orderStep.href))"
-               :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }">{{ orderStep.name }}</a>
-            <icon v-if="!isLastOrderStep(index)" class="tabs__item-arrow" name="order-tab-arrow" width="6" height="8"
-                  viewBox="0 0 6 8"/>
+          <li
+            class="tabs__item"
+            v-for="(orderStep, index) in orderSteps"
+            :key="index"
+          >
+            <a
+              :href="orderStep.href"
+              @click.prevent="setActive(trimSharpFromHref(orderStep.href))"
+              :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }"
+            >
+              {{ orderStep.name }}
+            </a>
+            <icon
+              v-if="!isLastOrderStep(index)"
+              class="tabs__item-arrow"
+              name="order-tab-arrow"
+              width="6"
+              height="8"
+              viewBox="0 0 6 8"
+            />
           </li>
         </ul>
         <div class="horizontal-line"></div>
       </div>
       <section class="tabs__content-wrapper">
         <div class="tabs__items-content">
-          <div class="tabs__item-content" :class="{ 'active': isActive('location') }" id="location">
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('location') }"
+            id="location"
+          >
             <div class="location__data">
               <div class="input-row">
                 <label for="city">Город</label>
-                <input type="search" id="city" placeholder="Начните вводить город">
+                <input
+                  type="search"
+                  id="city"
+                  placeholder="Начните вводить город"
+                >
               </div>
               <div class="input-row">
                 <label for="pick-up-point">Пункт выдачи</label>
-                <input type="search" id="pick-up-point" placeholder="Начните вводить пункт выдачи">
+                <input
+                  type="search"
+                  id="pick-up-point"
+                  placeholder="Начните вводить пункт выдачи"
+                >
               </div>
             </div>
             <div class="location__map">
@@ -32,26 +59,54 @@
               <img src="@/assets/img/map.jpg" alt="">
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('model') }" id="model">
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('model') }"
+            id="model"
+          >
             <div class="filter__model">
               <ul>
                 <li v-for="(filter, index) in modelTypes" :key="index">
-                  <input name="model-filter" type="radio" :id="filter.type" :checked="index === 0">
-                  <label :for="filter.type">{{ filter.label }}</label>
+                  <input
+                    name="model-filter"
+                    type="radio"
+                    :id="filter.type"
+                    :checked="filter.checked"
+                  >
+                  <label :for="filter.type">
+                    {{ filter.label }}
+                  </label>
                 </li>
               </ul>
             </div>
             <div class="cars-list">
-              <div :class="['cars-list__car', {' active' : index === 1}]" v-for="(car, index) in carsList" :key="index">
+              <div
+                :class="['cars-list__car', {' active' : car.checked}]"
+                v-for="(car, index) in carsList"
+                :key="index"
+                @click="setCheckedCar(index)"
+              >
                 <div class="car-data">
-                  <div class="car-name">{{ car.name }}</div>
-                  <span class="car-price">{{ car.priceMin }} - {{ car.priceMax }} ₽</span>
+                  <div class="car-name">
+                    {{ car.name }}
+                  </div>
+                  <span class="car-price">
+                    {{ car.priceMin }} - {{ car.priceMax }} ₽
+                  </span>
                 </div>
-                  <img :src="require(`@/assets/img/${car.image}`)" alt="" class="car-img">
+                  <img
+                    :src="require(`@/assets/img/${car.image}`)"
+                    alt=""
+                    class="car-img"
+                  >
               </div>
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('additional') }" id="additional">
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('additional') }"
+            id="additional"
+          >
             <div class="filter filter__color">
               <div class="filter__title">Цвет</div>
               <ul>
@@ -97,32 +152,61 @@
               </ul>
             </div>
           </div>
-          <div class="tabs__item-content" :class="{ 'active': isActive('total') }" id="total"></div>
+          <div
+            class="tabs__item-content"
+            :class="{ 'active': isActive('total') }"
+            id="total"
+          ></div>
         </div>
-        <div class="order-wrapper">
+        <div class="order-wrapper" :class="{ modal: this.modal }">
           <div class="vertical-line"></div>
           <div class="order">
-            <h3 class="order__title">Ваш заказ:</h3>
+            <h3 class="order__title">
+              Ваш заказ:
+            </h3>
             <ul>
               <li>
-                <span class="order__description">Пункт выдачи</span>
-                <span class="order__value">Ульяновск, Нариманова 42</span>
+                <span class="order__description">
+                  Пункт выдачи
+                </span>
+                <span class="order__value">
+                  Ульяновск, Нариманова 42
+                </span>
               </li>
             </ul>
-            <div class="order__price"><span>Цена:</span> от 8 000 до 12 000 ₽</div>
+            <div class="order__price">
+              <span>Цена:</span> от 8 000 до 12 000 ₽
+            </div>
             <div class="order__button">
-              <a href="" class="btn btn-disabled" v-on:click.prevent v-if="isActive('location')">Выбрать модель</a>
+              <a
+                href=""
+                class="btn btn-disabled"
+                v-on:click.prevent
+                v-if="isActive('location')">
+                Выбрать модель
+              </a>
+              <a
+                href=""
+                class="btn btn-disabled"
+                v-on:click.prevent
+                v-if="isActive('model')">
+                Дополнительно
+              </a>
             </div>
           </div>
         </div>
       </section>
     </div>
+    <div
+      class="shopping-basket"
+      @click="toggleModal"
+      :class="{ close: this.close }"
+    ></div>
   </section>
 </template>
 
 <script>
 import AppHeader from '../components/AppHeader'
-import Icon from '@/components/Icon'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 
@@ -130,13 +214,14 @@ export default {
   name: 'Order',
   components: {
     AppHeader,
-    Icon,
     DatePicker
   },
   data () {
     return {
       datePickerFrom: null,
       datePickerTo: null,
+      modal: false,
+      close: false,
       activeItem: 'location',
       orderSteps: [
         {
@@ -159,15 +244,18 @@ export default {
       modelTypes: [
         {
           type: 'all-models',
-          label: 'Все модели'
+          label: 'Все модели',
+          checked: true
         },
         {
           type: 'economy',
-          label: 'Эконом'
+          label: 'Эконом',
+          checked: false
         },
         {
           type: 'premium',
-          label: 'Премиум'
+          label: 'Премиум',
+          checked: false
         }
       ],
       carsList: [
@@ -175,37 +263,43 @@ export default {
           name: 'Elantra',
           priceMin: '12 000',
           priceMax: '25 000',
-          image: 'cars/elantra.jpg'
+          image: 'cars/elantra.jpg',
+          checked: false
         },
         {
           name: 'i30 N',
           priceMin: '10 000',
           priceMax: '32 000',
-          image: 'cars/i-30-n.jpg'
+          image: 'cars/i-30-n.jpg',
+          checked: true
         },
         {
           name: 'Crete',
           priceMin: '12 000',
           priceMax: '25 000',
-          image: 'cars/creta.jpg'
+          image: 'cars/creta.jpg',
+          checked: false
         },
         {
           name: 'Sonata',
           priceMin: '10 000',
           priceMax: '32 000',
-          image: 'cars/sonata.jpg'
+          image: 'cars/sonata.jpg',
+          checked: false
         },
         {
           name: 'Elantra v.2',
           priceMin: '12 000',
           priceMax: '25 000',
-          image: 'cars/elantra.jpg'
+          image: 'cars/elantra.jpg',
+          checked: false
         },
         {
           name: 'i30 N v.2',
           priceMin: '10 000',
           priceMax: '32 000',
-          image: 'cars/i-30-n.jpg'
+          image: 'cars/i-30-n.jpg',
+          checked: false
         }
       ],
       colors: [
@@ -252,6 +346,19 @@ export default {
     }
   },
   methods: {
+    setCheckedCar (index) {
+      for (let key in this.carsList) {
+        if (this.carsList[key].checked) {
+          this.carsList[key].checked = false
+        }
+      }
+
+      this.carsList[index].checked = true
+    },
+    toggleModal () {
+      this.modal = !this.modal
+      this.close = !this.close
+    },
     isLastOrderStep (index) {
       return (this.orderSteps.length - 1) === index
     },
@@ -291,7 +398,7 @@ input, .mx-input
       -webkit-appearance: none
       width: 8px
       height: 8px
-      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0.805714L7.19429 0L4 3.19429L0.805714 0L0 0.805714L3.19429 4L0 7.19429L0.805714 8L4 4.80571L7.19429 8L8 7.19429L4.80571 4L8 0.805714Z' fill='%23121212'/%3E%3C/svg%3E")
+      background-image: url('../assets/img/svg/clear-input.svg')
 
 label
   margin-right: 8px
@@ -393,6 +500,7 @@ label
         display: block
 
   &__content-wrapper
+    position: relative
     display: flex
     justify-content: space-between
     font-weight: 300
@@ -477,23 +585,37 @@ label
     padding-bottom: 50px
 
   &-wrapper
-    position: relative
     width: calc(28% - 32px)
 
     @media (max-width: $screen-md)
-      width: 100%
-      max-width: 736px
+      display: none
+      position: fixed
+      top: 0
+      right: 0
+      width: 320px
+      max-width: 320px
+      height: 100%
       padding-top: 0
-      padding-left: 0
+      padding-left: 20px
+      padding-right: 20px
+      background: rgba(255, 255, 255, 0.9)
+      overflow-y: auto
+      z-index: 2
 
     & .vertical-line
       position: absolute
+
+      @media (max-width: $screen-md)
+        display: block
+        position: fixed
+        top: 0
+        right: 320px
 
   &__title
     font-weight: 500
     font-size: 18px
     line-height: 21px
-    padding-bottom: 52px
+    padding-bottom: 16px
     text-align: right
 
   & ul
@@ -501,6 +623,7 @@ label
 
     & li
       position: relative
+      height: 35px
 
       &:before
         content: ''
@@ -694,4 +817,31 @@ label
       width: 100%
       max-width: 256px
       align-self: flex-end
+
+.shopping-basket
+  @media (max-width: $screen-md)
+    display: block
+    position: fixed
+    width: 40px
+    height: 40px
+    right: 40px
+    bottom: 40px
+    background-image: url('../assets/img/svg/basket.svg')
+    background-repeat: no-repeat
+    cursor: pointer
+    z-index: 2
+
+  &.close
+    top: 34px
+    right: 274px
+    width: 20px
+    height: 20px
+    background-image: url('../assets/img/svg/close.svg')
+
+    @media (max-width: $screen-xss)
+      top: 27px
+      right: 279px
+
+.modal
+  display: block
 </style>

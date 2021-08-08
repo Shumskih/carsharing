@@ -4,11 +4,10 @@
     <main class="main">
       <router-view/>
     </main>
-    </div>
+  </div>
 </template>
 
 <script>
-import Icon from '@/components/Icon'
 import Menu from '@/components/Menu'
 import Slider from '@/components/Slider'
 import AppHeader from '@/components/AppHeader'
@@ -17,7 +16,6 @@ import AppFooter from '@/components/AppFooter'
 export default {
   name: 'App',
   components: {
-    Icon,
     Menu,
     Slider,
     AppHeader,
