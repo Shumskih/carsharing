@@ -43,6 +43,7 @@
                   type="search"
                   id="city"
                   placeholder="Начните вводить город"
+                  v-model="steps.step1.city"
                 >
               </div>
               <div class="input-row">
@@ -51,6 +52,7 @@
                   type="search"
                   id="pick-up-point"
                   placeholder="Начните вводить пункт выдачи"
+                  v-model="steps.step1.point"
                 >
               </div>
             </div>
@@ -83,8 +85,8 @@
               <div
                 :class="['cars-list__car', {' active' : car.checked}]"
                 v-for="(car, index) in carsList"
-                :key="index"
-                @click="setCheckedCar(index)"
+                :key="car.id"
+                @click="setCheckedCar(index, car.id)"
               >
                 <div class="car-data">
                   <div class="car-name">
@@ -173,6 +175,15 @@ export default {
   },
   data () {
     return {
+      steps: {
+        step1: {
+          city: '',
+          point: ''
+        },
+        step2: {
+          model: ''
+        }
+      },
       modal: false,
       close: false,
       activeItem: 'location',
@@ -213,6 +224,7 @@ export default {
       ],
       carsList: [
         {
+          id: 1,
           name: 'Elantra',
           priceMin: '12 000',
           priceMax: '25 000',
@@ -220,6 +232,7 @@ export default {
           checked: false
         },
         {
+          id: 2,
           name: 'i30 N',
           priceMin: '10 000',
           priceMax: '32 000',
@@ -227,6 +240,7 @@ export default {
           checked: true
         },
         {
+          id: 3,
           name: 'Crete',
           priceMin: '12 000',
           priceMax: '25 000',
@@ -234,6 +248,7 @@ export default {
           checked: false
         },
         {
+          id: 4,
           name: 'Sonata',
           priceMin: '10 000',
           priceMax: '32 000',
@@ -241,6 +256,7 @@ export default {
           checked: false
         },
         {
+          id: 5,
           name: 'Elantra v.2',
           priceMin: '12 000',
           priceMax: '25 000',
@@ -248,6 +264,7 @@ export default {
           checked: false
         },
         {
+          id: 6,
           name: 'i30 N v.2',
           priceMin: '10 000',
           priceMax: '32 000',
@@ -258,7 +275,7 @@ export default {
     }
   },
   methods: {
-    setCheckedCar (index) {
+    setCheckedCar (index, modelId) {
       for (let key in this.carsList) {
         if (this.carsList[key].checked) {
           this.carsList[key].checked = false
@@ -266,6 +283,7 @@ export default {
       }
 
       this.carsList[index].checked = true
+      this.steps.step2 = modelId
     },
     toggleModal () {
       this.modal = !this.modal
