@@ -43,6 +43,7 @@
                   type="search"
                   id="city"
                   placeholder="Начните вводить город"
+                  v-model="steps.location.city"
                 >
               </div>
               <div class="input-row">
@@ -51,6 +52,7 @@
                   type="search"
                   id="pick-up-point"
                   placeholder="Начните вводить пункт выдачи"
+                  v-model="steps.location.point"
                 >
               </div>
             </div>
@@ -83,12 +85,12 @@
               <div
                 :class="['cars-list__car', {' active' : car.checked}]"
                 v-for="(car, index) in carsList"
-                :key="index"
-                @click="setCheckedCar(index)"
+                :key="car.id"
+                @click="setCheckedCar(index, car.id)"
               >
                 <div class="car-data">
                   <div class="car-name">
-                    {{ car.name }}
+                    {{ car.model }}
                   </div>
                   <span class="car-price">
                     {{ car.priceMin }} - {{ car.priceMax }} ₽
@@ -208,12 +210,12 @@
               Ваш заказ:
             </h3>
             <ul>
-              <li>
+              <li v-for="(value, index) in orderList" :key="index">
                 <span class="order__description">
-                  Пункт выдачи
+                  {{ value.name }}
                 </span>
                 <span class="order__value">
-                  Ульяновск, Нариманова 42
+                  {{ value.value }}
                 </span>
               </li>
             </ul>
@@ -223,16 +225,26 @@
             <div class="order__button">
               <a
                 href=""
-                class="btn btn-disabled"
-                v-on:click.prevent
-                v-if="isActive('location')">
+                class="btn"
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled ('location'),
+                  'btn-standard': isAllFieldsFilled ('location'),
+                  }"
+                v-if="isActive('location')"
+                @click.prevent="setActive('model')"
+              >
                 Выбрать модель
               </a>
               <a
                 href=""
-                class="btn btn-disabled"
-                v-on:click.prevent
-                v-if="isActive('model')">
+                class="btn"
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled ('model'),
+                  'btn-standard': isAllFieldsFilled ('model'),
+                  }"
+                v-if="isActive('model')"
+                @click.prevent="setActive('additional')"
+              >
                 Дополнительно
               </a>
             </div>
@@ -263,6 +275,15 @@ export default {
     return {
       datePickerFrom: null,
       datePickerTo: null,
+      steps: {
+        location: {
+          city: '',
+          point: ''
+        },
+        model: {
+          model: ''
+        }
+      },
       modal: false,
       close: false,
       activeItem: 'location',
@@ -303,42 +324,54 @@ export default {
       ],
       carsList: [
         {
-          name: 'Elantra',
+          id: 1,
+          name: 'Hyndai',
+          model: 'Elantra',
           priceMin: '12 000',
           priceMax: '25 000',
           image: 'cars/elantra.jpg',
           checked: false
         },
         {
-          name: 'i30 N',
+          id: 2,
+          name: 'Hyndai',
+          model: 'i30 N',
           priceMin: '10 000',
           priceMax: '32 000',
           image: 'cars/i-30-n.jpg',
-          checked: true
+          checked: false
         },
         {
-          name: 'Crete',
+          id: 3,
+          name: 'Hyndai',
+          model: 'Crete',
           priceMin: '12 000',
           priceMax: '25 000',
           image: 'cars/creta.jpg',
           checked: false
         },
         {
-          name: 'Sonata',
+          id: 4,
+          name: 'Hyndai',
+          model: 'Sonata',
           priceMin: '10 000',
           priceMax: '32 000',
           image: 'cars/sonata.jpg',
           checked: false
         },
         {
-          name: 'Elantra v.2',
+          id: 5,
+          name: 'Hyndai',
+          model: 'Elantra v.2',
           priceMin: '12 000',
           priceMax: '25 000',
           image: 'cars/elantra.jpg',
           checked: false
         },
         {
-          name: 'i30 N v.2',
+          id: 6,
+          name: 'Hyndai',
+          model: 'i30 N v.2',
           priceMin: '10 000',
           priceMax: '32 000',
           image: 'cars/i-30-n.jpg',
@@ -398,8 +431,32 @@ export default {
       ]
     }
   },
+  computed: {
+    orderList () {
+      let stepValues = {}
+
+      if (this.isAllFieldsFilled('location')) {
+        stepValues['location'] = {
+          name: 'Пункт выдачи',
+          value: this.steps.location.city + ', ' + this.steps.location.point
+        }
+      }
+      if (this.isAllFieldsFilled('model')) {
+        for (let car of this.carsList) {
+          if (car.id === this.steps.model) {
+            stepValues['model'] = {
+              name: 'Модель',
+              value: car.name + ', ' + car.model
+            }
+          }
+        }
+      }
+
+      return stepValues
+    }
+  },
   methods: {
-    setCheckedCar (index) {
+    setCheckedCar (index, modelId) {
       for (let key in this.carsList) {
         if (this.carsList[key].checked) {
           this.carsList[key].checked = false
@@ -407,6 +464,7 @@ export default {
       }
 
       this.carsList[index].checked = true
+      this.steps.model = modelId
     },
     setCheckedColor (index) {
       for (let key in this.colors) {
@@ -432,6 +490,15 @@ export default {
     },
     trimSharpFromHref (string) {
       return string.substr(1)
+    },
+    isAllFieldsFilled (stepName) {
+      for (let key in this.steps[stepName]) {
+        if (!this.steps[stepName][key].trim()) {
+          return false
+        }
+      }
+
+      return true
     }
   }
 }
