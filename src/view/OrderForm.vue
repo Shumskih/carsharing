@@ -43,7 +43,7 @@
                   type="search"
                   id="city"
                   placeholder="Начните вводить город"
-                  v-model="steps.step1.city"
+                  v-model="steps.location.city"
                 >
               </div>
               <div class="input-row">
@@ -52,7 +52,7 @@
                   type="search"
                   id="pick-up-point"
                   placeholder="Начните вводить пункт выдачи"
-                  v-model="steps.step1.point"
+                  v-model="steps.location.point"
                 >
               </div>
             </div>
@@ -90,7 +90,7 @@
               >
                 <div class="car-data">
                   <div class="car-name">
-                    {{ car.name }}
+                    {{ car.model }}
                   </div>
                   <span class="car-price">
                     {{ car.priceMin }} - {{ car.priceMax }} ₽
@@ -122,12 +122,12 @@
               Ваш заказ:
             </h3>
             <ul>
-              <li>
+              <li v-for="(value, index) in orderList" :key="index">
                 <span class="order__description">
-                  Пункт выдачи
+                  {{ value.name }}
                 </span>
                 <span class="order__value">
-                  Ульяновск, Нариманова 42
+                  {{ value.value }}
                 </span>
               </li>
             </ul>
@@ -137,16 +137,26 @@
             <div class="order__button">
               <a
                 href=""
-                class="btn btn-disabled"
-                v-on:click.prevent
-                v-if="isActive('location')">
+                class="btn"
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled ('location'),
+                  'btn-standard': isAllFieldsFilled ('location'),
+                  }"
+                v-if="isActive('location')"
+                @click.prevent="setActive('model')"
+              >
                 Выбрать модель
               </a>
               <a
                 href=""
-                class="btn btn-disabled"
-                v-on:click.prevent
-                v-if="isActive('model')">
+                class="btn"
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled ('model'),
+                  'btn-standard': isAllFieldsFilled ('model'),
+                  }"
+                v-if="isActive('model')"
+                @click.prevent="setActive('additional')"
+              >
                 Дополнительно
               </a>
             </div>
@@ -176,11 +186,11 @@ export default {
   data () {
     return {
       steps: {
-        step1: {
+        location: {
           city: '',
           point: ''
         },
-        step2: {
+        model: {
           model: ''
         }
       },
@@ -225,7 +235,8 @@ export default {
       carsList: [
         {
           id: 1,
-          name: 'Elantra',
+          name: 'Hyndai',
+          model: 'Elantra',
           priceMin: '12 000',
           priceMax: '25 000',
           image: 'cars/elantra.jpg',
@@ -233,15 +244,17 @@ export default {
         },
         {
           id: 2,
-          name: 'i30 N',
+          name: 'Hyndai',
+          model: 'i30 N',
           priceMin: '10 000',
           priceMax: '32 000',
           image: 'cars/i-30-n.jpg',
-          checked: true
+          checked: false
         },
         {
           id: 3,
-          name: 'Crete',
+          name: 'Hyndai',
+          model: 'Crete',
           priceMin: '12 000',
           priceMax: '25 000',
           image: 'cars/creta.jpg',
@@ -249,7 +262,8 @@ export default {
         },
         {
           id: 4,
-          name: 'Sonata',
+          name: 'Hyndai',
+          model: 'Sonata',
           priceMin: '10 000',
           priceMax: '32 000',
           image: 'cars/sonata.jpg',
@@ -257,7 +271,8 @@ export default {
         },
         {
           id: 5,
-          name: 'Elantra v.2',
+          name: 'Hyndai',
+          model: 'Elantra v.2',
           priceMin: '12 000',
           priceMax: '25 000',
           image: 'cars/elantra.jpg',
@@ -265,13 +280,38 @@ export default {
         },
         {
           id: 6,
-          name: 'i30 N v.2',
+          name: 'Hyndai',
+          model: 'i30 N v.2',
           priceMin: '10 000',
           priceMax: '32 000',
           image: 'cars/i-30-n.jpg',
           checked: false
         }
       ]
+    }
+  },
+  computed: {
+    orderList () {
+      let stepValues = {}
+
+      if (this.isAllFieldsFilled('location')) {
+        stepValues['location'] = {
+          name: 'Пункт выдачи',
+          value: this.steps.location.city + ', ' + this.steps.location.point
+        }
+      }
+      if (this.isAllFieldsFilled('model')) {
+        for (let car of this.carsList) {
+          if (car.id === this.steps.model) {
+            stepValues['model'] = {
+              name: 'Модель',
+              value: car.name + ', ' + car.model
+            }
+          }
+        }
+      }
+
+      return stepValues
     }
   },
   methods: {
@@ -283,7 +323,7 @@ export default {
       }
 
       this.carsList[index].checked = true
-      this.steps.step2 = modelId
+      this.steps.model = modelId
     },
     toggleModal () {
       this.modal = !this.modal
@@ -300,6 +340,15 @@ export default {
     },
     trimSharpFromHref (string) {
       return string.substr(1)
+    },
+    isAllFieldsFilled (stepName) {
+      for (let key in this.steps[stepName]) {
+        if (!this.steps[stepName][key].trim()) {
+          return false
+        }
+      }
+
+      return true
     }
   }
 }
