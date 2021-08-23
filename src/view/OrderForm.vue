@@ -6,14 +6,14 @@
         <div class="horizontal-line"></div>
         <ul class="tabs">
           <li
-            class="tabs__item"
             v-for="(orderStep, index) in orderSteps"
             :key="index"
+            class="tabs__item"
           >
             <a
               :href="orderStep.href"
-              @click.prevent="setActive(trimSharpFromHref(orderStep.href))"
               :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }"
+              @click.prevent="setActive(trimSharpFromHref(orderStep.href), orderStep.button)"
             >
               {{ orderStep.name }}
             </a>
@@ -32,27 +32,27 @@
       <section class="tabs__content-wrapper">
         <div class="tabs__items-content">
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('location') }"
+            class="tabs__item-content"
             id="location"
           >
             <div class="location__data">
               <div class="input-row">
                 <label for="city">Город</label>
                 <input
+                  v-model="steps.location.city"
                   type="search"
                   id="city"
                   placeholder="Начните вводить город"
-                  v-model="steps.location.city"
                 >
               </div>
               <div class="input-row">
                 <label for="pick-up-point">Пункт выдачи</label>
                 <input
+                  v-model="steps.location.point"
                   type="search"
                   id="pick-up-point"
                   placeholder="Начните вводить пункт выдачи"
-                  v-model="steps.location.point"
                 >
               </div>
             </div>
@@ -62,18 +62,18 @@
             </div>
           </div>
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('model') }"
+            class="tabs__item-content"
             id="model"
           >
             <div class="filter__model">
               <ul>
                 <li v-for="(filter, index) in modelTypes" :key="index">
                   <input
-                    name="model-filter"
-                    type="radio"
                     :id="filter.type"
                     :checked="filter.checked"
+                    name="model-filter"
+                    type="radio"
                   >
                   <label :for="filter.type">
                     {{ filter.label }}
@@ -83,8 +83,8 @@
             </div>
             <div class="cars-list">
               <div
-                :class="['cars-list__car', {' active' : car.checked}]"
                 v-for="(car, index) in carsList"
+                :class="['cars-list__car', {' active' : car.checked}]"
                 :key="car.id"
                 @click="setCheckedCar(index, car.id)"
               >
@@ -105,13 +105,13 @@
             </div>
           </div>
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('additional') }"
+            class="tabs__item-content"
             id="additional"
           ></div>
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('total') }"
+            class="tabs__item-content"
             id="total"
           ></div>
         </div>
@@ -136,28 +136,15 @@
             </div>
             <div class="order__button">
               <a
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled (activeItem),
+                  'btn-standard': isAllFieldsFilled (activeItem),
+                  }"
                 href=""
                 class="btn"
-                :class="{
-                  'btn-disabled': !isAllFieldsFilled ('location'),
-                  'btn-standard': isAllFieldsFilled ('location'),
-                  }"
-                v-if="isActive('location')"
-                @click.prevent="setActive('model')"
+                @click.prevent="setActive(getNextItem(activeItem))"
               >
-                Выбрать модель
-              </a>
-              <a
-                href=""
-                class="btn"
-                :class="{
-                  'btn-disabled': !isAllFieldsFilled ('model'),
-                  'btn-standard': isAllFieldsFilled ('model'),
-                  }"
-                v-if="isActive('model')"
-                @click.prevent="setActive('additional')"
-              >
-                Дополнительно
+                {{ buttonName }}
               </a>
             </div>
           </div>
@@ -165,9 +152,9 @@
       </section>
     </div>
     <div
+      :class="{ close: this.close }"
       class="shopping-basket"
       @click="toggleModal"
-      :class="{ close: this.close }"
     ></div>
   </section>
 </template>
@@ -197,18 +184,23 @@ export default {
       modal: false,
       close: false,
       activeItem: 'location',
+      nextItem: 'model',
+      buttonName: 'Выбрать модель',
       orderSteps: [
         {
           href: '#location',
-          name: 'Местоположение'
+          name: 'Местоположение',
+          button: 'Выбрать модель'
         },
         {
           href: '#model',
-          name: 'Модель'
+          name: 'Модель',
+          button: 'Дополнительно'
         },
         {
           href: '#additional',
-          name: 'Дополнительно'
+          name: 'Дополнительно',
+          button: 'Итого'
         },
         {
           href: '#total',
@@ -301,14 +293,14 @@ export default {
         }
       }
       if (this.isAllFieldsFilled('model')) {
-        for (let car of this.carsList) {
+        this.carsList.forEach(car => {
           if (car.id === this.steps.model) {
             stepValues['model'] = {
               name: 'Модель',
               value: car.name + ', ' + car.model
             }
           }
-        }
+        })
       }
 
       return stepValues
@@ -316,13 +308,11 @@ export default {
   },
   methods: {
     setCheckedCar (index, modelId) {
-      for (let key in this.carsList) {
-        if (this.carsList[key].checked) {
-          this.carsList[key].checked = false
-        }
-      }
+      this.carsList = this.carsList.map((item, i) => ({
+        ...item,
+        checked: i === index
+      }))
 
-      this.carsList[index].checked = true
       this.steps.model = modelId
     },
     toggleModal () {
@@ -335,8 +325,12 @@ export default {
     isActive (menuItem) {
       return this.activeItem === menuItem
     },
-    setActive (menuItem) {
+    setActive (menuItem, button = null) {
       this.activeItem = menuItem
+
+      if (button) {
+        this.buttonName = button
+      }
     },
     trimSharpFromHref (string) {
       return string.substr(1)
@@ -349,6 +343,17 @@ export default {
       }
 
       return true
+    },
+    getNextItem (currentItem) {
+      this.orderSteps.forEach((order, index) => {
+        if (this.trimSharpFromHref(order.href) === currentItem) {
+          let nextIndex = ++index
+          this.nextItem = this.trimSharpFromHref(this.orderSteps[nextIndex].href)
+          this.buttonName = this.orderSteps[nextIndex].button
+        }
+      })
+
+      return this.nextItem
     }
   }
 }
@@ -670,6 +675,10 @@ label
 .cars-list
   display: flex
   flex-wrap: wrap
+  margin-bottom: 50px
+
+  @media (max-width: $screen-md)
+    justify-content: center
 
   &__car
     display: flex
