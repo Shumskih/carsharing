@@ -6,14 +6,14 @@
         <div class="horizontal-line"></div>
         <ul class="tabs">
           <li
-            class="tabs__item"
             v-for="(orderStep, index) in orderSteps"
             :key="index"
+            class="tabs__item"
           >
             <a
               :href="orderStep.href"
-              @click.prevent="setActive(trimSharpFromHref(orderStep.href))"
               :class="{ active: isActive(trimSharpFromHref(orderStep.href)) }"
+              @click.prevent="setActive(trimSharpFromHref(orderStep.href), orderStep.button)"
             >
               {{ orderStep.name }}
             </a>
@@ -32,14 +32,15 @@
       <section class="tabs__content-wrapper">
         <div class="tabs__items-content">
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('location') }"
+            class="tabs__item-content"
             id="location"
           >
             <div class="location__data">
               <div class="input-row">
                 <label for="city">Город</label>
                 <input
+                  v-model="steps.location.city"
                   type="search"
                   id="city"
                   placeholder="Начните вводить город"
@@ -48,6 +49,7 @@
               <div class="input-row">
                 <label for="pick-up-point">Пункт выдачи</label>
                 <input
+                  v-model="steps.location.point"
                   type="search"
                   id="pick-up-point"
                   placeholder="Начните вводить пункт выдачи"
@@ -60,29 +62,73 @@
             </div>
           </div>
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('model') }"
-            id="model"
-          ></div>
-          <div
             class="tabs__item-content"
+            id="model"
+          >
+            <div class="filter__model">
+              <ul>
+                <li v-for="(filter, index) in modelTypes" :key="index">
+                  <input
+                    :id="filter.type"
+                    :checked="filter.checked"
+                    name="model-filter"
+                    type="radio"
+                  >
+                  <label :for="filter.type">
+                    {{ filter.label }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+            <div class="cars-list">
+              <div
+                v-for="(car, index) in carsList"
+                :class="['cars-list__car', {' active' : car.checked}]"
+                :key="car.id"
+                @click="setCheckedCar(index, car.id)"
+              >
+                <div class="car-data">
+                  <div class="car-name">
+                    {{ car.model }}
+                  </div>
+                  <span class="car-price">
+                    {{ car.priceMin }} - {{ car.priceMax }} ₽
+                  </span>
+                </div>
+                  <img
+                    :src="require(`@/assets/img/${car.image}`)"
+                    alt=""
+                    class="car-img"
+                  >
+              </div>
+            </div>
+          </div>
+          <div
             :class="{ 'active': isActive('additional') }"
+            class="tabs__item-content"
             id="additional"
           ></div>
           <div
-            class="tabs__item-content"
             :class="{ 'active': isActive('total') }"
+            class="tabs__item-content"
             id="total"
           ></div>
         </div>
-        <div class="order-wrapper">
+        <div class="order-wrapper" :class="{ modal: this.modal }">
           <div class="vertical-line"></div>
           <div class="order">
-            <h3 class="order__title">Ваш заказ:</h3>
+            <h3 class="order__title">
+              Ваш заказ:
+            </h3>
             <ul>
-              <li>
-                <span class="order__description">Пункт выдачи</span>
-                <span class="order__value">Ульяновск, Нариманова 42</span>
+              <li v-for="(value, index) in orderList" :key="index">
+                <span class="order__description">
+                  {{ value.name }}
+                </span>
+                <span class="order__value">
+                  {{ value.value }}
+                </span>
               </li>
             </ul>
             <div class="order__price">
@@ -90,17 +136,26 @@
             </div>
             <div class="order__button">
               <a
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled (activeItem),
+                  'btn-standard': isAllFieldsFilled (activeItem),
+                  }"
                 href=""
-                class="btn btn-disabled"
-                v-on:click.prevent
-                v-if="isActive('location')">
-                Выбрать модель
+                class="btn"
+                @click.prevent="setActive(getNextItem(activeItem))"
+              >
+                {{ buttonName }}
               </a>
             </div>
           </div>
         </div>
       </section>
     </div>
+    <div
+      :class="{ close: this.close }"
+      class="shopping-basket"
+      @click="toggleModal"
+    ></div>
   </section>
 </template>
 
@@ -117,39 +172,188 @@ export default {
   },
   data () {
     return {
+      steps: {
+        location: {
+          city: '',
+          point: ''
+        },
+        model: {
+          model: ''
+        }
+      },
+      modal: false,
+      close: false,
       activeItem: 'location',
+      nextItem: 'model',
+      buttonName: 'Выбрать модель',
       orderSteps: [
         {
           href: '#location',
-          name: 'Местоположение'
+          name: 'Местоположение',
+          button: 'Выбрать модель'
         },
         {
           href: '#model',
-          name: 'Модель'
+          name: 'Модель',
+          button: 'Дополнительно'
         },
         {
           href: '#additional',
-          name: 'Дополнительно'
+          name: 'Дополнительно',
+          button: 'Итого'
         },
         {
           href: '#total',
           name: 'Итого'
         }
+      ],
+      modelTypes: [
+        {
+          type: 'all-models',
+          label: 'Все модели',
+          checked: true
+        },
+        {
+          type: 'economy',
+          label: 'Эконом',
+          checked: false
+        },
+        {
+          type: 'premium',
+          label: 'Премиум',
+          checked: false
+        }
+      ],
+      carsList: [
+        {
+          id: 1,
+          name: 'Hyndai',
+          model: 'Elantra',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/elantra.jpg',
+          checked: false
+        },
+        {
+          id: 2,
+          name: 'Hyndai',
+          model: 'i30 N',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/i-30-n.jpg',
+          checked: false
+        },
+        {
+          id: 3,
+          name: 'Hyndai',
+          model: 'Crete',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/creta.jpg',
+          checked: false
+        },
+        {
+          id: 4,
+          name: 'Hyndai',
+          model: 'Sonata',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/sonata.jpg',
+          checked: false
+        },
+        {
+          id: 5,
+          name: 'Hyndai',
+          model: 'Elantra v.2',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/elantra.jpg',
+          checked: false
+        },
+        {
+          id: 6,
+          name: 'Hyndai',
+          model: 'i30 N v.2',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/i-30-n.jpg',
+          checked: false
+        }
       ]
     }
   },
+  computed: {
+    orderList () {
+      let stepValues = {}
+
+      if (this.isAllFieldsFilled('location')) {
+        stepValues['location'] = {
+          name: 'Пункт выдачи',
+          value: this.steps.location.city + ', ' + this.steps.location.point
+        }
+      }
+      if (this.isAllFieldsFilled('model')) {
+        this.carsList.forEach(car => {
+          if (car.id === this.steps.model) {
+            stepValues['model'] = {
+              name: 'Модель',
+              value: car.name + ', ' + car.model
+            }
+          }
+        })
+      }
+
+      return stepValues
+    }
+  },
   methods: {
+    setCheckedCar (index, modelId) {
+      this.carsList = this.carsList.map((item, i) => ({
+        ...item,
+        checked: i === index
+      }))
+
+      this.steps.model = modelId
+    },
+    toggleModal () {
+      this.modal = !this.modal
+      this.close = !this.close
+    },
     isLastOrderStep (index) {
       return (this.orderSteps.length - 1) === index
     },
     isActive (menuItem) {
       return this.activeItem === menuItem
     },
-    setActive (menuItem) {
+    setActive (menuItem, button = null) {
       this.activeItem = menuItem
+
+      if (button) {
+        this.buttonName = button
+      }
     },
     trimSharpFromHref (string) {
       return string.substr(1)
+    },
+    isAllFieldsFilled (stepName) {
+      for (let key in this.steps[stepName]) {
+        if (!this.steps[stepName][key].trim()) {
+          return false
+        }
+      }
+
+      return true
+    },
+    getNextItem (currentItem) {
+      this.orderSteps.forEach((order, index) => {
+        if (this.trimSharpFromHref(order.href) === currentItem) {
+          let nextIndex = ++index
+          this.nextItem = this.trimSharpFromHref(this.orderSteps[nextIndex].href)
+          this.buttonName = this.orderSteps[nextIndex].button
+        }
+      })
+
+      return this.nextItem
     }
   }
 }
@@ -258,6 +462,7 @@ label
         display: block
 
   &__content-wrapper
+    position: relative
     display: flex
     justify-content: space-between
     font-weight: 300
@@ -338,23 +543,37 @@ label
     padding-bottom: 50px
 
   &-wrapper
-    position: relative
     width: calc(28% - 32px)
 
     @media (max-width: $screen-md)
-      width: 100%
-      max-width: 736px
+      display: none
+      position: fixed
+      top: 0
+      right: 0
+      width: 320px
+      max-width: 320px
+      height: 100%
       padding-top: 0
-      padding-left: 0
+      padding-left: 20px
+      padding-right: 20px
+      background: rgba(255, 255, 255, 0.9)
+      overflow-y: auto
+      z-index: 2
 
     & .vertical-line
       position: absolute
+
+      @media (max-width: $screen-md)
+        display: block
+        position: fixed
+        top: 0
+        right: 320px
 
   &__title
     font-weight: 500
     font-size: 18px
     line-height: 21px
-    padding-bottom: 52px
+    padding-bottom: 16px
     text-align: right
 
   & ul
@@ -362,6 +581,7 @@ label
 
     & li
       position: relative
+      height: 35px
 
       &:before
         content: ''
@@ -407,4 +627,133 @@ label
 
     & span
       font-weight: 500
+
+.filter
+  margin-bottom: 32px
+
+  &__title
+    margin-bottom: 16px
+
+  &__model
+    margin-bottom: 48px
+
+    & ul
+      display: flex
+      flex-wrap: wrap
+      justify-content: flex-start
+      margin: 0
+
+      & li
+        margin-right: 16px
+        margin-bottom: 10px
+
+        & input[type="radio"]
+          display: none
+
+          & + label
+            display: flex
+            align-items: center
+            color: $gray
+
+          & + label::before
+            content: ''
+            width: 12px
+            height: 12px
+            border: 1px solid $gray
+            border-radius: 50%
+            background-repeat: no-repeat
+            background-position: center center
+            background-size: 50% 50%
+            margin-right: 8px
+
+          &:checked + label::before
+            border: 3px solid $main-accent
+
+          &:checked + label
+            color: $black
+
+.cars-list
+  display: flex
+  flex-wrap: wrap
+  margin-bottom: 50px
+
+  @media (max-width: $screen-md)
+    justify-content: center
+
+  &__car
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    width: 368px
+    height: 224px
+    border: 1px solid $gray-light
+    padding: 16px
+    cursor: pointer
+
+    @media (max-width: 1170px)
+      width: 316px
+      height: 193px
+
+    @media (max-width: 808px)
+      width: 295px
+      height: 180px
+
+    @media (max-width: $screen-sm)
+      width: 368px
+      height: 224px
+
+    @media (max-width: $screen-xs)
+      width: 316px
+      height: 193px
+
+    &:hover
+      border: 1px solid $gray
+
+    &.active
+      border: 1px solid $main-accent
+      cursor: default
+
+    & .car-name
+      font-size: 18px
+      line-height: 21px
+      font-weight: 500
+      text-transform: uppercase
+
+    & .car-price
+      font-size: 14px
+      line-height: 16px
+      color: $gray
+
+    & .car-img
+      height: auto
+      width: 100%
+      max-width: 256px
+      align-self: flex-end
+
+.shopping-basket
+  @media (max-width: $screen-md)
+    display: block
+    position: fixed
+    width: 40px
+    height: 40px
+    right: 40px
+    bottom: 40px
+    background-image: url('../assets/img/svg/basket.svg')
+    background-repeat: no-repeat
+    cursor: pointer
+    z-index: 2
+
+  &.close
+    top: 34px
+    right: 274px
+    width: 20px
+    height: 20px
+    background-image: url('../assets/img/svg/close.svg')
+
+    @media (max-width: $screen-xss)
+      top: 27px
+      right: 279px
+
+.modal
+  display: block
 </style>
