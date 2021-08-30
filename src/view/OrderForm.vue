@@ -43,6 +43,7 @@
                   type="search"
                   id="city"
                   placeholder="Начните вводить город"
+                  v-model="steps.location.city"
                 >
               </div>
               <div class="input-row">
@@ -51,6 +52,7 @@
                   type="search"
                   id="pick-up-point"
                   placeholder="Начните вводить пункт выдачи"
+                  v-model="steps.location.point"
                 >
               </div>
             </div>
@@ -63,26 +65,158 @@
             class="tabs__item-content"
             :class="{ 'active': isActive('model') }"
             id="model"
-          ></div>
+          >
+            <div class="filter__model">
+              <ul>
+                <li v-for="(filter, index) in modelTypes" :key="index">
+                  <input
+                    name="model-filter"
+                    type="radio"
+                    :id="filter.type"
+                    :checked="filter.checked"
+                  >
+                  <label :for="filter.type">
+                    {{ filter.label }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+            <div class="cars-list">
+              <div
+                :class="['cars-list__car', {' active' : car.checked}]"
+                v-for="(car, index) in carsList"
+                :key="car.id"
+                @click="setCheckedCar(index, car.id)"
+              >
+                <div class="car-data">
+                  <div class="car-name">
+                    {{ car.model }}
+                  </div>
+                  <span class="car-price">
+                    {{ car.priceMin }} - {{ car.priceMax }} ₽
+                  </span>
+                </div>
+                  <img
+                    :src="require(`@/assets/img/${car.image}`)"
+                    alt=""
+                    class="car-img"
+                  >
+              </div>
+            </div>
+          </div>
           <div
             class="tabs__item-content"
             :class="{ 'active': isActive('additional') }"
             id="additional"
-          ></div>
+          >
+            <div class="filter filter__color">
+              <div class="filter__title">
+                Цвет
+              </div>
+              <ul>
+                <li v-for="(filter, index) in colors" :key="index">
+                  <input
+                    name="color-filter"
+                    type="radio"
+                    :id="filter.type"
+                    :checked="filter.checked"
+                  >
+                  <label
+                    :for="filter.type"
+                    @click="setCheckedColor(index)"
+                  >
+                    {{ filter.label }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+            <div class="filter filter__date">
+              <div class="filter__title">
+                Дата аренды
+              </div>
+              <div class="filter__data">
+                <div class="input-row">
+                  <label class="datepicker">
+                    С
+                  </label>
+                  <date-picker
+                    v-model="datePickerFrom"
+                    type="datetime"
+                    placeholder="Введите дату и время"
+                    id="date-from"
+                    format="DD.MM.YYYY HH:mm"
+                  />
+                </div>
+                <div class="input-row">
+                  <label class="datepicker">
+                    По
+                  </label>
+                  <date-picker
+                    v-model="datePickerTo"
+                    type="datetime"
+                    placeholder="Введите дату и время"
+                    id="date-from"
+                    format="DD.MM.YYYY HH:mm"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="filter filter__tariff">
+              <div class="filter__title">
+                Тариф
+              </div>
+              <ul>
+                <li v-for="(tariff, index) in tariffs" :key="index">
+                  <input
+                    name="tariff-filter"
+                    type="radio"
+                    :id="tariff.type"
+                    :checked="tariff.checked"
+                  >
+                  <label :for="tariff.type">
+                    {{ tariff.name }}, {{ tariff.price }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+            <div class="filter filter__additional">
+              <div class="filter__title">
+                Доп услуги
+              </div>
+              <ul>
+                <li v-for="(service, index) in additionalServices" :key="index">
+                  <input
+                    name="tariff-filter"
+                    type="checkbox"
+                    :id="service.id"
+                  >
+                  <label :for="service.id">
+                    {{ service.name }}, {{ service.price }}
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
           <div
             class="tabs__item-content"
             :class="{ 'active': isActive('total') }"
             id="total"
           ></div>
         </div>
-        <div class="order-wrapper">
+        <div class="order-wrapper" :class="{ modal: this.modal }">
           <div class="vertical-line"></div>
           <div class="order">
-            <h3 class="order__title">Ваш заказ:</h3>
+            <h3 class="order__title">
+              Ваш заказ:
+            </h3>
             <ul>
-              <li>
-                <span class="order__description">Пункт выдачи</span>
-                <span class="order__value">Ульяновск, Нариманова 42</span>
+              <li v-for="(value, index) in orderList" :key="index">
+                <span class="order__description">
+                  {{ value.name }}
+                </span>
+                <span class="order__value">
+                  {{ value.value }}
+                </span>
               </li>
             </ul>
             <div class="order__price">
@@ -91,16 +225,38 @@
             <div class="order__button">
               <a
                 href=""
-                class="btn btn-disabled"
-                v-on:click.prevent
-                v-if="isActive('location')">
+                class="btn"
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled ('location'),
+                  'btn-standard': isAllFieldsFilled ('location'),
+                  }"
+                v-if="isActive('location')"
+                @click.prevent="setActive('model')"
+              >
                 Выбрать модель
+              </a>
+              <a
+                href=""
+                class="btn"
+                :class="{
+                  'btn-disabled': !isAllFieldsFilled ('model'),
+                  'btn-standard': isAllFieldsFilled ('model'),
+                  }"
+                v-if="isActive('model')"
+                @click.prevent="setActive('additional')"
+              >
+                Дополнительно
               </a>
             </div>
           </div>
         </div>
       </section>
     </div>
+    <div
+      class="shopping-basket"
+      @click="toggleModal"
+      :class="{ close: this.close }"
+    ></div>
   </section>
 </template>
 
@@ -117,6 +273,19 @@ export default {
   },
   data () {
     return {
+      datePickerFrom: null,
+      datePickerTo: null,
+      steps: {
+        location: {
+          city: '',
+          point: ''
+        },
+        model: {
+          model: ''
+        }
+      },
+      modal: false,
+      close: false,
       activeItem: 'location',
       orderSteps: [
         {
@@ -135,10 +304,181 @@ export default {
           href: '#total',
           name: 'Итого'
         }
+      ],
+      modelTypes: [
+        {
+          type: 'all-models',
+          label: 'Все модели',
+          checked: true
+        },
+        {
+          type: 'economy',
+          label: 'Эконом',
+          checked: false
+        },
+        {
+          type: 'premium',
+          label: 'Премиум',
+          checked: false
+        }
+      ],
+      carsList: [
+        {
+          id: 1,
+          name: 'Hyndai',
+          model: 'Elantra',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/elantra.jpg',
+          checked: false
+        },
+        {
+          id: 2,
+          name: 'Hyndai',
+          model: 'i30 N',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/i-30-n.jpg',
+          checked: false
+        },
+        {
+          id: 3,
+          name: 'Hyndai',
+          model: 'Crete',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/creta.jpg',
+          checked: false
+        },
+        {
+          id: 4,
+          name: 'Hyndai',
+          model: 'Sonata',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/sonata.jpg',
+          checked: false
+        },
+        {
+          id: 5,
+          name: 'Hyndai',
+          model: 'Elantra v.2',
+          priceMin: '12 000',
+          priceMax: '25 000',
+          image: 'cars/elantra.jpg',
+          checked: false
+        },
+        {
+          id: 6,
+          name: 'Hyndai',
+          model: 'i30 N v.2',
+          priceMin: '10 000',
+          priceMax: '32 000',
+          image: 'cars/i-30-n.jpg',
+          checked: false
+        }
+      ],
+      colors: [
+        {
+          type: 'any',
+          label: 'Любой',
+          checked: true
+        },
+        {
+          type: 'red',
+          label: 'Красный',
+          checked: false
+        },
+        {
+          type: 'blue',
+          label: 'Голубой',
+          checked: false
+        }
+      ],
+      tariffs: [
+        {
+          name: 'Поминутно',
+          type: 'minute',
+          price: '7₽/мин',
+          checked: true
+        },
+        {
+          name: 'На сутки',
+          type: 'day',
+          price: '1999₽/сутки',
+          checked: false
+        }
+      ],
+      additionalServices: [
+        {
+          name: 'Полный бак',
+          id: 'full-petrol',
+          price: '500р',
+          checked: false
+        },
+        {
+          name: 'Детское кресло',
+          id: 'baby-chair',
+          price: '200р',
+          checked: false
+        },
+        {
+          name: 'Правый руль',
+          id: 'right-hand-drive',
+          price: '1600р',
+          checked: false
+        }
       ]
     }
   },
+  computed: {
+    orderList () {
+      let stepValues = {}
+
+      if (this.isAllFieldsFilled('location')) {
+        stepValues['location'] = {
+          name: 'Пункт выдачи',
+          value: this.steps.location.city + ', ' + this.steps.location.point
+        }
+      }
+      if (this.isAllFieldsFilled('model')) {
+        for (let car of this.carsList) {
+          if (car.id === this.steps.model) {
+            stepValues['model'] = {
+              name: 'Модель',
+              value: car.name + ', ' + car.model
+            }
+          }
+        }
+      }
+
+      return stepValues
+    }
+  },
   methods: {
+    setCheckedCar (index, modelId) {
+      for (let key in this.carsList) {
+        if (this.carsList[key].checked) {
+          this.carsList[key].checked = false
+        }
+      }
+
+      this.carsList[index].checked = true
+      this.steps.model = modelId
+    },
+    setCheckedColor (index) {
+      for (let key in this.colors) {
+        if (this.colors[key].checked) {
+          this.colors[key].checked = false
+        }
+      }
+
+      this.colors[index].checked = true
+    },
+    toggleModal () {
+      this.modal = !this.modal
+      this.close = !this.close
+    },
     isLastOrderStep (index) {
       return (this.orderSteps.length - 1) === index
     },
@@ -150,6 +490,15 @@ export default {
     },
     trimSharpFromHref (string) {
       return string.substr(1)
+    },
+    isAllFieldsFilled (stepName) {
+      for (let key in this.steps[stepName]) {
+        if (!this.steps[stepName][key].trim()) {
+          return false
+        }
+      }
+
+      return true
     }
   }
 }
@@ -159,7 +508,7 @@ export default {
 *, *:after, *:before
   box-sizing: border-box
 
-input
+input, .mx-input
   width: 224px
   padding: 3px 8px
   border: none
@@ -182,6 +531,31 @@ input
 
 label
   margin-right: 8px
+
+.mx-input
+  box-shadow: none
+  height: inherit
+  width: 267px
+  margin-bottom: 13px
+  border-radius: 0
+
+  @media (max-width: 360px)
+    width: 230px
+
+  &:hover, &:focus
+    border-bottom: 1px solid #999999
+
+.mx-icon-clear
+  font-size: 14px
+  right: -55px
+  color: $black
+  top: 15px
+
+  @media (max-width: 360px)
+    right: -15px
+
+.mx-icon-calendar
+  display: none
 
 .btn
   @media (max-width: $screen-lg)
@@ -258,6 +632,7 @@ label
         display: block
 
   &__content-wrapper
+    position: relative
     display: flex
     justify-content: space-between
     font-weight: 300
@@ -306,6 +681,10 @@ label
       flex: 1
       max-width: 100px
 
+      &.datepicker
+        max-width: 18px
+        min-width: 18px
+
       @media (max-width: 364px)
         flex: 0.4
 
@@ -338,23 +717,37 @@ label
     padding-bottom: 50px
 
   &-wrapper
-    position: relative
     width: calc(28% - 32px)
 
     @media (max-width: $screen-md)
-      width: 100%
-      max-width: 736px
+      display: none
+      position: fixed
+      top: 0
+      right: 0
+      width: 320px
+      max-width: 320px
+      height: 100%
       padding-top: 0
-      padding-left: 0
+      padding-left: 20px
+      padding-right: 20px
+      background: rgba(255, 255, 255, 0.9)
+      overflow-y: auto
+      z-index: 2
 
     & .vertical-line
       position: absolute
+
+      @media (max-width: $screen-md)
+        display: block
+        position: fixed
+        top: 0
+        right: 320px
 
   &__title
     font-weight: 500
     font-size: 18px
     line-height: 21px
-    padding-bottom: 52px
+    padding-bottom: 16px
     text-align: right
 
   & ul
@@ -362,6 +755,7 @@ label
 
     & li
       position: relative
+      height: 35px
 
       &:before
         content: ''
@@ -407,4 +801,179 @@ label
 
     & span
       font-weight: 500
+
+.filter
+  margin-bottom: 32px
+
+  &__title
+    margin-bottom: 16px
+
+  &__model, &__color, &__tariff, &__additional
+    margin-bottom: 48px
+
+    & ul
+      display: flex
+      flex-wrap: wrap
+      justify-content: flex-start
+      margin: 0
+
+      & li
+        margin-right: 16px
+        margin-bottom: 10px
+
+        & input[type="radio"]
+          display: none
+
+          & + label
+            display: flex
+            align-items: center
+            color: $gray
+
+          & + label::before
+            content: ''
+            width: 12px
+            height: 12px
+            border: 1px solid $gray
+            border-radius: 50%
+            background-repeat: no-repeat
+            background-position: center center
+            background-size: 50% 50%
+            margin-right: 8px
+
+          &:checked + label::before
+            border: 3px solid $main-accent
+
+          &:checked + label
+            color: $black
+
+  &__tariff
+    & ul
+      display: flex
+      flex-direction: column
+
+      & li
+        margin-bottom: 8px
+
+  &__additional
+    & ul
+      display: flex
+      justify-content: flex-start
+      flex-direction: column
+      margin: 0
+
+      & li
+        margin-bottom: 8px
+
+        & input[type="checkbox"]
+          display: none
+
+          & + label
+            position: relative
+            display: flex
+            align-items: center
+            color: $gray
+            margin-left: 20px
+
+          & + label::before
+            position: absolute
+            content: ''
+            left: -25px
+            width: 24px
+            height: 24px
+            background-repeat: no-repeat
+            background-position: center center
+            background-size: 50% 50%
+            background-image: url("../assets/img/svg/checkbox.svg")
+            margin-right: 8px
+
+          &:checked + label::before
+            position: absolute
+            left: -26px
+            width: 28px
+            height: 28px
+            background-image: url("../assets/img/svg/checkbox-checked.svg")
+
+          &:checked + label
+            color: $black
+
+.cars-list
+  display: flex
+  flex-wrap: wrap
+
+  &__car
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    width: 368px
+    height: 224px
+    border: 1px solid $gray-light
+    padding: 16px
+    cursor: pointer
+
+    @media (max-width: 1170px)
+      width: 316px
+      height: 193px
+
+    @media (max-width: 808px)
+      width: 295px
+      height: 180px
+
+    @media (max-width: $screen-sm)
+      width: 368px
+      height: 224px
+
+    @media (max-width: $screen-xs)
+      width: 316px
+      height: 193px
+
+    &:hover
+      border: 1px solid $gray
+
+    &.active
+      border: 1px solid $main-accent
+      cursor: default
+
+    & .car-name
+      font-size: 18px
+      line-height: 21px
+      font-weight: 500
+      text-transform: uppercase
+
+    & .car-price
+      font-size: 14px
+      line-height: 16px
+      color: $gray
+
+    & .car-img
+      height: auto
+      width: 100%
+      max-width: 256px
+      align-self: flex-end
+
+.shopping-basket
+  @media (max-width: $screen-md)
+    display: block
+    position: fixed
+    width: 40px
+    height: 40px
+    right: 40px
+    bottom: 40px
+    background-image: url('../assets/img/svg/basket.svg')
+    background-repeat: no-repeat
+    cursor: pointer
+    z-index: 2
+
+  &.close
+    top: 34px
+    right: 274px
+    width: 20px
+    height: 20px
+    background-image: url('../assets/img/svg/close.svg')
+
+    @media (max-width: $screen-xss)
+      top: 27px
+      right: 279px
+
+.modal
+  display: block
 </style>
